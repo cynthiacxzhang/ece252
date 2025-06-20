@@ -6,6 +6,11 @@
 #include <errno.h>
 #include <stdbool.h>
 
+// Valgrind - a tool for memory debugging, memory leak detection, and profiling
+// It helps to identify memory leaks, invalid memory access, and other memory-related issues in C
+// To use Valgrind, compile your C program with debugging information (using -g flag)
+// and then run it with Valgrind using the command: valgrind --leak-check=full ./your_program
+
 // Basic example of a process - not syntactically correct
 int *x = malloc(sizeof(int)); // allocate memory for an integer
 
