@@ -8,6 +8,7 @@
 
 const int MAX_SIZE = 100;
 
+// boolean type is a data type that can hold one of two values: true or false.
 bool isValidInput(const char *input)
 {
     // Check if the input is not NULL and not empty
