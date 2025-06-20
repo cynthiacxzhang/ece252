@@ -1,0 +1,10 @@
+TOPIC 1 - OPERATING SYSTEMS
+
+- Processor scheduling: The operating system decides which processes run at any given time, managing CPU time efficiently among multiple tasks.
+- Memory management: The OS allocates and tracks memory usage for processes, ensuring each has the memory it needs and preventing conflicts.
+- IO, file system, networks: The OS manages input/output devices, organizes files on storage devices, and handles network communication.
+- Abstract hardware via drivers (open, close, read, write): Device drivers provide a standard interface to hardware, allowing programs to interact with devices using common operations like open, close, read, and write. These are wrappers around system calls, which are the mechanisms programs use to request services from the OS.
+
+Kernel's function:
+The kernel is the core part of the operating system. It manages system resources (CPU, memory, devices), enforces security and isolation between processes, and provides the low-level services that applications use via system calls.
+
