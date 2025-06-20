@@ -4,10 +4,11 @@
 Includes are directives that tell the compiler to include the contents of a file in the program.
 */
 
-#include <stdio.h>  // standard input/output library
-#include <stdlib.h> // standard library for memory allocation, process control, etc.
-#include <string.h> // string handling functions
-#include <errno.h>  // error number definitions
+#include <stdio.h>   // standard input/output library
+#include <stdlib.h>  // standard library for memory allocation, process control, etc.
+#include <string.h>  // string handling functions
+#include <errno.h>   // error number definitions
+#include <stdbool.h> // boolean type support, true/false values
 
 /*
 DEFINE is a preprocessor directive that defines a macro.
@@ -18,6 +19,8 @@ For example: #define SQUARE(x) ((x) * (x))
 */
 
 #define bufsize 1000 // Define a buffer size for input
+
+const int MAX_SIZE = 100; // Constant variable, cannot be changed after initialization - read only
 
 /*
 A buffer is a temporary storage area in memory used to hold data
