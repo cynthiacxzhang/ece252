@@ -1,0 +1,15 @@
+**Memory Allocators**
+
+Memory allocators: manage dynamic memory alloc in programs
+
+    malloc() - allocate memory
+    free() - deallocate memory
+    calloc() - allocate and zero-initialize memory
+    realloc() - resize allocated memory
+
+Void pointer: void *
+- can be implicitly converted to any other pointer type
+- used for generic functions that can handle any data type
+- cannot be dereferenced directly - must be cast to a specific pointer type first
+
+Valgrind: tool for detecting memory leaks and errors in C/C++ programs
