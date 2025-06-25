@@ -43,3 +43,39 @@ Arrays:
 - can be multidimensional (e.g., `int arr[3][4]`)
 - can be initialized with values (e.g., `int arr[3] = {1, 2, 3}`)
 - can be passed to functions as pointers
+
+Dynamically Allocated Array: 
+- allocated at runtime using memory allocators
+- can be resized using `realloc()`
+- must be freed using `free()`
+- can be created using `malloc()`, `calloc()`, or `realloc()`
+
+    int *arr = malloc(10 * sizeof(int)); // allocate memory for 10 integers
+    if (arr == NULL) {
+        // handle memory allocation failure
+    }
+    free(arr); // deallocate memory
+
+C-Strings: 
+- null-terminated character arrays
+- can be manipulated using string functions from `string.h`
+
+    char str[20] = "Hello, World!";
+    printf("%s\n", str); // prints "Hello, World!"
+
+- allocated however many bytes, but must be null-terminated
+
+Return Codes: 
+- Functions can return an integer value to indicate success or failure
+- Conventionally, `0` indicates success, and non-zero values indicate different error conditions
+- Example:
+
+    ```c
+    int main() {
+        // Your code here
+        return 0; // Return 0 to indicate success
+    }
+    ```
+
+Documentation:
+- man pages: `man <function_name>` in terminal
