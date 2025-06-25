@@ -16,5 +16,30 @@ Pass by value only, no pass by reference
 No function overloading, no exception handling
 - C relies on error codes and return values for error handling
 
+-----------------------------------------------------------------------------
 
+C Preprocessor Directives:
+- `#include` for including header files
+- `#define` for defining macros
+- `#ifdef`, `#ifndef`, `#endif` for conditional compilation
 
+C Standard Library:
+- Provides a set of standard functions for input/output, string manipulation, memory management, etc.
+
+C Standard Input/Output: <stdio.h>
+- `printf()` for formatted output
+- `scanf()` for formatted input
+- `fopen()`, `fclose()`, `fread()`, `fwrite()` for file operations
+- `stdlib.h` for general utilities (e.g., memory allocation, random numbers)
+- `string.h` for string manipulation functions (e.g., `strlen()`, `str
+
+C Constants: 
+- `#define` for preprocessor constants
+- `const` for constant variables
+
+Arrays: 
+- compiler-allocated contiguous memory blocks
+- fixed size, cannot be resized at runtime
+- can be multidimensional (e.g., `int arr[3][4]`)
+- can be initialized with values (e.g., `int arr[3] = {1, 2, 3}`)
+- can be passed to functions as pointers
