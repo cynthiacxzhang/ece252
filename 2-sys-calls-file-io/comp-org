@@ -26,4 +26,3 @@ Computer organization refers to the operational structure and components of a co
 **Summary Flow:**  
 System Bus ↔ CPU (with Registers) ↔ Memory  ↔ Timer  ↔ IO ↔ HDD    
 
-
