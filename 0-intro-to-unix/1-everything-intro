@@ -1,4 +1,16 @@
-**INTRO to File IO**
+**INTRO to UNIX**
+
+OS: software that manages hardware and software resources
+- provides services to applications and users
+- manages processes, memory, file systems, and I/O devices
+
+Kernel: core part of the OS
+- manages system resources and provides essential services
+
+Shell: user interface to the OS
+- command-line interface (CLI) or graphical user interface (GUI)
+
+*File IO Overview*
 
 File System in UNIX: arrangment of directories and files
 - starts in root (/)
@@ -17,4 +29,8 @@ Filename: names in a directory      // cannot use (/) or null character
 
 In ROOT, . == ..
 
-Pathname
+Pathname: sequence of directory entries leading to a file
+- absolute pathname: starts with root (/)
+- relative pathname: starts from current directory
+
+
