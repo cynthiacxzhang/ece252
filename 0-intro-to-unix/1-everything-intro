@@ -10,7 +10,7 @@ Kernel: core part of the OS
 Shell: user interface to the OS
 - command-line interface (CLI) or graphical user interface (GUI)
 
-*File IO Overview*
+*1.4 File IO Overview*
 
 File System in UNIX: arrangment of directories and files
 - starts in root (/)
@@ -33,4 +33,90 @@ Pathname: sequence of directory entries leading to a file
 - absolute pathname: starts with root (/)
 - relative pathname: starts from current directory
 
+Use ls to list files in a directory
+- ls -l: long listing format (shows permissions, owner, size, etc)
+- ls -a: shows hidden files (those starting with .)
+- ls -R: recursive listing (shows all files in subdirectories)
+
+Working Directory: current directory where commands are executed
+- can change with cd command
+- pwd: prints the current working directory
+
+
+*1.5 Input/Output Overview*
+
+File Descriptor: small integers that the kernel uses to identify files accessed by a process
+- when the kernal opens a file or creates a new file, it returns a file descriptor
+
+All shells open three descriptors whenever a new program is run
+- why? to provide a standard way for programs to read input and write output
+
+    Standard input (stdin): file descriptor 0
+    Standard output (stdout): file descriptor 1
+    Standard error (stderr): file descriptor 2
+
+- what does this have to do with the shell?
+  - when you run a command, the shell sets up these file descriptors for the command
+  - the command can then read from stdin and write to stdout and stderr
+
+
+Unbuffered IO: provided by the functions open(), read(), write(), lseek(), close()
+- these functions operate directly on file descriptors
+
+Buffered IO: provided by the functions fopen(), fread(), fwrite(), fseek(), fclose()
+- these functions operate on FILE pointers (higher-level abstraction)
+- they use a buffer to improve performance by reducing the number of system calls
+
+POSIX: Portable Operating System Interface
+- a set of standards for maintaining compatibility between operating systems
+- defines APIs for file operations, process management, and other system services
+
+<unistd.h>: header file that defines constants, types, and functions for system calls
+- includes functions like read(), write(), close(), and lseek()
+- provides access to POSIX-compliant system calls like fork(), exec(), and pipe()
+
+*Standard IO*
+
+Provice a buffered interface to the unbuffered IO functions
+- simplifies reading and writing files
+
+    fgets: reads a line from stdin
+    read(): reads a specified number of bytes from a file descriptor
+
+Most common standard IO function: printf()
+- used to write formatted output to stdout
+
+Standard IO functions are defined in the <stdio.h> header file 
+
+    #include <stdio.h>
+
+*Programs and Processes*
+
+Program: executable file residing on disk in a directory
+- read into memory then executed by the kernel
+
+
+Processes: an executing instance of a program
+
+PID: process ID
+- every process has a unique PID assigned by the kernel
+- used to identify and manage processes
+- nonnegative integer, starting from 1
+
+    getpid(): system call that returns the PID of the calling process
+    pid_t: data type used to represent process IDs
+
+*Some C Conventions*
+
+# define: preprocessor directive used to define constants
+- used to define symbolic constants that can be used throughout the code
+- example: #define BUFFER_SIZE 1024
+
+# include: preprocessor directive used to include header files
+- used to include standard libraries or custom header files
+- example: #include <stdio.h>
+
+*Threads and Thread IDs*
+
+Usually a process has only one thread of control - one set of instructions executing at a time
 
