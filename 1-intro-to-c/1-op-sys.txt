@@ -1,5 +1,8 @@
 TOPIC 1 - OPERATING SYSTEMS
 
+The software that controls the hardware resources of the computer
+- provides an environment under which programs can run
+
 - Processor scheduling: The operating system decides which processes run at any given time, managing CPU time efficiently among multiple tasks.
 - Memory management: The OS allocates and tracks memory usage for processes, ensuring each has the memory it needs and preventing conflicts.
 - IO, file system, networks: The OS manages input/output devices, organizes files on storage devices, and handles network communication.
@@ -7,4 +10,6 @@ TOPIC 1 - OPERATING SYSTEMS
 
 Kernel's function:
 The kernel is the core part of the operating system. It manages system resources (CPU, memory, devices), enforces security and isolation between processes, and provides the low-level services that applications use via system calls.
+- Interface to the kernel: layer of software called "system calls"
 
+Shell: command line interpreter that reads user input and executes commands

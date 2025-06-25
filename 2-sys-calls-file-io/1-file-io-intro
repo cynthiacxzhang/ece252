@@ -1,0 +1,20 @@
+**INTRO to File IO**
+
+File System in UNIX: arrangment of directories and files
+- starts in root (/)
+
+Directory: file that contains directory entries
+- each directory entry has filename + file attributes (size, owner, etc)
+
+stat & fstat: system calls used to retrieve information about a file
+- stat uses a file path; fstat uses a file descriptor.
+
+Filename: names in a directory      // cannot use (/) or null character
+- two filenames auto created when creating a new directory: . and ..
+
+. = current dir
+.. = parent dir
+
+In ROOT, . == ..
+
+Pathname

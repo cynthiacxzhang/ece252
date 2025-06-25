@@ -1,5 +1,5 @@
 TOPIC 2 - SYSTEMS PROGRAMMING
--
+
 Programs that interact with the kernel via system calls 
 	- Sys calls - file manipulation, communication, process management
 	- Processes have their own virtual memory space
