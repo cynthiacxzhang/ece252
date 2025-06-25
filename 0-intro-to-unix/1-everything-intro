@@ -120,3 +120,17 @@ PID: process ID
 
 Usually a process has only one thread of control - one set of instructions executing at a time
 
+Thread: a lightweight process that can run concurrently with other threads
+- multiple threads can exist within a single process, sharing the same memory space
+- each thread has its own thread ID (TID) for identification
+- TIDs are local to a process, unlike PIDs which are global
+
+*Error Handling*
+
+When an error occues, a negative value is returned (often, usually -1)
+- errno: global variable set by system calls and library functions to indicate the error
+
+    errno.h: header file that defines error codes and the errno variable
+
+
+
