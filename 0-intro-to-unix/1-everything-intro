@@ -10,7 +10,7 @@ Kernel: core part of the OS
 Shell: user interface to the OS
 - command-line interface (CLI) or graphical user interface (GUI)
 
-*1.4 File IO Overview*
+**1.4 File IO Overview***
 
 File System in UNIX: arrangment of directories and files
 - starts in root (/)
@@ -43,7 +43,7 @@ Working Directory: current directory where commands are executed
 - pwd: prints the current working directory
 
 
-*1.5 Input/Output Overview*
+**1.5 Input/Output Overview**
 
 File Descriptor: small integers that the kernel uses to identify files accessed by a process
 - when the kernal opens a file or creates a new file, it returns a file descriptor
@@ -90,7 +90,7 @@ Standard IO functions are defined in the <stdio.h> header file
 
     #include <stdio.h>
 
-*Programs and Processes*
+**Programs and Processes**
 
 Program: executable file residing on disk in a directory
 - read into memory then executed by the kernel
@@ -116,7 +116,7 @@ PID: process ID
 - used to include standard libraries or custom header files
 - example: #include <stdio.h>
 
-*Threads and Thread IDs*
+**Threads and Thread IDs**
 
 Usually a process has only one thread of control - one set of instructions executing at a time
 
@@ -125,12 +125,12 @@ Thread: a lightweight process that can run concurrently with other threads
 - each thread has its own thread ID (TID) for identification
 - TIDs are local to a process, unlike PIDs which are global
 
-*Error Handling*
+**Error Handling**
 
 When an error occues, a negative value is returned (often, usually -1)
 - errno: global variable set by system calls and library functions to indicate the error
 
-    errno.h: header file that defines error codes and the errno variable
+errno.h: header file that defines error codes and the errno variable
 
 
 

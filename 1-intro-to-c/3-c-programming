@@ -1,2 +1,20 @@
 **C Programming Intro**
 
+C is a subset of C++
+- C++ is a superset of C, meaning all valid C code is also valid C++ code
+
+C only has structs, no classes
+
+    struct: A user-defined data type that allows grouping of variables of different types
+    class: A user-defined data type that allows grouping of variables and functions (methods) of different types
+
+Pass by value only, no pass by reference
+
+    Pass by value: A copy of the variable is passed to the function
+    Pass by reference: A reference to the variable is passed to the function, allowing the function to modify the original variable
+
+No function overloading, no exception handling
+- C relies on error codes and return values for error handling
+
+
+
