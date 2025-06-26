@@ -1,0 +1,72 @@
+**File Descriptors**
+
+To the kernal, all open files are referred to by file descriptors (fd)
+
+    fd: an integer representing an open file
+
+When we open an existing file or create a new file, the kernel returns an fd to the process
+- used to refer to the file in reading or writing operations
+
+Convention:
+- 0: standard input (stdin)
+- 1: standard output (stdout)
+- 2: standard error (stderr)
+
+These are pre-opened file descriptors available to every process
+- they are used for input and output operations in the terminal
+
+In unistd.h (system call interface), these are defined as:
+
+```c
+#define STDIN_FILENO 0
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
+```
+
+In stdio.h (buffered IO for standard C lib), these are defined as:
+
+```c
+extern FILE *stdin;
+extern FILE *stdout;
+extern FILE *stderr;
+```
+
+Function to open a file and obtain a file descriptor:
+
+    ```c
+    int fd = open(const char *pathname, int flags);
+    ```
+    - `pathname`: path to the file or device
+    - `flags`: options for opening the file (e.g., read-only, write-only, etc.)
+    - returns: file descriptor (fd, an integer) on success, or -1 on error
+
+Common flags for opening files:
+    O_RDONLY: open file for reading only
+    O_WRONLY: open file for writing only
+    O_RDWR: open file for reading and writing
+    O_CREAT: create the file if it does not exist
+    O_EXCL: exclusive access, fail if the file already exists
+    O_APPEND: append to the end of the file
+
+Multiple processes can have file descriptors that point to the same open file entry
+
+**C File IO**
+
+Built on the universal IO system calls (open, read, write, close)
+- uses stdio library
+
+Pros: 
+- makes formatted IO easier
+- provides buffered IO for efficiency (minimizes system calls)
+- uses FILE * (pointer to a FILE structure) instead of file descriptors
+
+    FILE * is a struct!
+
+```c
+    FILE *fp = fopen(const char *pathname, const char *mode);
+
+        mode: "r" (read), "w" (write), "a" (append), "rb" (read binary), "rt" (read text), "wt" (write text), "at" (append text), etc
+```
+    - returns: pointer to a FILE structure on success, or NULL on error
+
+Other library calls: fscanf, fread, fwrite, fprintf, fseek, fflush, etc.

@@ -108,3 +108,26 @@ Special files with names of another file or directory
 - created using `ln -s target link_name`
 - used to create shortcuts or references to files/directories
 
+Ex.
+```
+ln -s /usr/bin/python3 python
+```
+This creates a symbolic link named `python` that points to `/usr/bin/python3`.
+
+    ln -s /usr/bin/python3 python
+    cat python
+    ls -l python
+    rm python
+    cat python
+    ls -li
+
+    What does this do? 
+    - Creates a symbolic link named `python` that points to `/usr/bin/python3`.
+    - `cat python` displays the content of the file pointed to by the symbolic link.
+    - `ls -l python` shows the details of the symbolic link.
+    - `rm python` removes the symbolic link.
+    - `cat python` after removing the link will result in an error since the link no longer exists.
+    - `ls -li` will show the inode information of the current directory, which will not include the removed symbolic link.
+
+Note: a deleted file continues to exist until all links to it are removed
+- and until the last open file entry (file descriptor) is closed
