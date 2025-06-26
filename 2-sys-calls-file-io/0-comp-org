@@ -62,12 +62,16 @@ Context switching: occurs when the kernel restores the state of a process after 
 
 Privileged Execution: certain operations (like accessing hardware) require privileged execution, which is only allowed in kernel mode
 
+Code executes in two modes: 
 1. unprivileged mode:
     - user mode: restricts access to hardware and system resources
 2. privileged mode:
     - kernel mode: allows full access to hardware and system resources
 
-- kernel mode: allows full access to hardware and system resources
-- handlers run in privileged mode to access hardware directly
+Some instructions can only be executed in priviledged mode:
+- disabling interrupts 
+- flushing cache
+- kernel memory can only be executed in kernel mode (privileged mode)
+
 
 
