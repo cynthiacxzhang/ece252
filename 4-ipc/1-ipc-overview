@@ -1,0 +1,6 @@
+**IPC Overview**
+
+Signals: send events between processes
+Communication: exchange data between processes
+Synchronization: coordinate actions between processes
+
