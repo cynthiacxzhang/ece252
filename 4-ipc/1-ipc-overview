@@ -4,3 +4,24 @@ Signals: send events between processes
 Communication: exchange data between processes
 Synchronization: coordinate actions between processes
 
+Taxonomy: see taxonomy.png
+
+data transfer*: one process writes, another reads
+- requires 2 transfers (e.g. 2 syscalls)0
+
+
+[process A -> (write) -> buffer -> (read) -> process B]
+- processes are in user space memory
+- buffer is in kernel space memory
+
+Reads are destructive: data is removed from the buffer after reading
+
+    shared memory: processes share a common memory region (read and write)
+    - very fast, but requires synchronization to avoid conflicts and to know when data is valid/available
+
+
+Aside: glimpse into unit 6
+    pipes: unidirectional communication channel between processes
+    - one process writes to the pipe, another reads from it
+    - data is buffered in the kernel
+    - can be anonymous (between related processes) or named (between unrelated processes)
