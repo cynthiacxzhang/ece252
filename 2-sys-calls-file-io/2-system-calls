@@ -29,13 +29,53 @@ Concept: in operating systems, all I/O devices are handled using the same system
     write()
 
 - this abstraction allows the OS to treat all devices uniformly, simplifying the programming model
+- everything is a file, so a socket or a keyboard input is treated like a file
+- using the same functions as above
 
     network sockets
     pipes
     terminals
     etc
 
-**System Calls**
+
+**Universal System Calls**
+
+1. Opening a file 
+
+```c
+int fd = open(const char * pathname, int flags)
+```
+- pathname: path to the file or device
+- flags: options for opening the file (e.g., read-only, write-only, etc
+- returns: file descriptor (fd, an integer) on success, or -1 on error (errno is set)
 
 
+2. Reading a file 
+
+```c
+ssize_t num_read = read(int fd, void *buf, size_t count)
+```    
+- fd: file descriptor of the open file
+- buf: pointer to a buffer where the read data will be stored
+- count: maximum number of bytes to read
+- returns: number of bytes read (0 if EOF, -1 on error)
+
+
+3. Writing to a file 
+
+```c
+ssize_t num_written = write(int fd, const void *buf, size_t count)
+```
+- fd: file descriptor of the open file
+- buf: pointer to the data to write
+- count: number of bytes to write
+- returns: number of bytes written (0 if no data written, -1 on error)
+
+4. Closing a file 
+
+```c
+int status = close(int fd)
+```
+- fd: file descriptor of the open file
+- returns: 0 on success, -1 on error (errno is set)
 
