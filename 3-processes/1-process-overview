@@ -1,2 +1,53 @@
 **Overview**
 
+Process: an instance of a running program
+
+Consists of: 
+
+    1. user-space memory: 
+    ```
+    +----------------+
+    | Stack           | <- grows downwards
+    +----------------+
+    | .....           | 
+    +----------------+
+    | Heap            | <- grows upwards
+    +----------------+                              
+    | Data            |
+    +----------------+
+    | Text            |
+    +----------------+
+    ```
+
+    2. kernel-space data: 
+    
+        process ID              (PID)
+        group ID                (GID)
+        state                   (running/runnable, sleeping, stopped, zombie)
+        page table              (maps virtual memory to physical memory)
+        file descriptor table   
+        signal masks & handlers
+        processor usage
+        limits
+        current working directory
+        root directory
+
+    3. thread of execution: sequence of instructions that can be executed independently
+
+        managed by a scheduler (kernel component)
+        e.g. a single, sequential flow of activities in a process
+
+
+**Init Process**
+- first process started by the kernel
+- PID 1
+- runs with root privileges, responsible for starting other processes
+
+Note: processes create other processes!
+
+    creator     ->      created
+    (parent)    ->      (child)
+
+    - a terminated child process that exists (as a zombie) until the parent process reads its exit status
+    - if the parent terminates first, the child process is adopted by the init process (PID 1)
+    
