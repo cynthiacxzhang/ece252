@@ -1,0 +1,22 @@
+**Execute**
+
+Execute: the exec family of functions is used to execute a new program, replacing the current process with a new one
+
+exec() -> replaces current process image with a new program image
+
+    system call: execve(const char *pathname, char *const argv[], char *const envp[])
+
+    library call: #include <unistd.h>
+                  exec{l, v}[p][e]()
+
+                  {l, v} = list of arguments, vector of arguments
+                  p = use path to find the executable
+                  e = use environment variables
+
+    variations: execl, execv, execle, execve, execvp
+    - all wrappers for the execve system call
+    - a wrapper is a function that calls another function with some additional functionality
+
+    execve only returns -1 if there is an error
+
+See: fork.c diagram
