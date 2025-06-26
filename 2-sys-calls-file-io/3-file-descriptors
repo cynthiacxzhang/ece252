@@ -69,4 +69,5 @@ Pros:
 ```
     - returns: pointer to a FILE structure on success, or NULL on error
 
-Other library calls: fscanf, fread, fwrite, fprintf, fseek, fflush, etc.
+Other library Calls: fscanf, fread, fwrite, fprintf, fseek, fflush, etc.
+- these functions use the FILE * pointer to perform IO operations
