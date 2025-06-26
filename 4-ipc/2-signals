@@ -1,0 +1,26 @@
+**Signals**
+
+Signals are a way for processes to send notifications or events to each other
+- like kernel-based interrupts, but for user processes
+- have a number
+- are asynchronous events
+- communicate an event or a command
+
+**Common Signals**
+
+create a table of common signals with their numbers, names, meanings, and default actions
+| Signal Number | Signal Name | Meaning                        | Default Action          |
+|---------------|-------------|--------------------------------|-------------------------|
+| 1             | SIGHUP      | Hangup (terminal disconnect)   | Terminate process |
+| 2             | SIGINT      | Interrupt (Ctrl+C)             | Terminate process |
+| 3             | SIGQUIT     | Quit (Ctrl+\)                  | Terminate process and core dump |
+| 9             | SIGKILL     | Kill (cannot be caught or ignored) | Terminate processe |
+| 11            | SIGSEGV     | Segmentation fault (invalid memory access) | Terminate process and core dump |
+| 15            | SIGTERM     | Termination request           | Terminate process gracefully |
+| 16            | SIGCHLD     | Child process terminated      | Ignore or handle (default iignore)|
+| 17            | SIGCONT     | Continue (resume stopped process) | Resume process execution |
+| 18            | SIGSTOP     | Stop (cannot be caught or ignored) | Stop process execution |
+| 19            | SIGTSTP     | Terminal stop (Ctrl+Z) | Stop process execution |
+
+
+Signal disposition: action taken when a signal is received
