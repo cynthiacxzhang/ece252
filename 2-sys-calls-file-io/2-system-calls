@@ -1,0 +1,41 @@
+**System Calls Overview**
+
+User code request for OS service via trap instructions
+
+thread of execution:
+1. stores operands in registers
+2. invokes trap instruction
+3. kernel reads operands from registers and performs system calls
+
+Read File: 
+
+    ssize_t read(int fd, void *buf, size_t count);
+
+    - fd: file descriptor (an integer representing an open file)
+    - buf: pointer to a buffer where the read data will be stored
+    - count: maximum number of bytes to read
+
+    returns: 1. # of bytes read 
+             2. 0 if end of file (EOF) is reached
+             3. -1 on error (errno is set)
+
+**Universality of IO**
+
+Concept: in operating systems, all I/O devices are handled using the same system call interface
+
+    open()
+    close()
+    read()
+    write()
+
+- this abstraction allows the OS to treat all devices uniformly, simplifying the programming model
+
+    network sockets
+    pipes
+    terminals
+    etc
+
+**System Calls**
+
+
+
