@@ -1,2 +1,110 @@
-**FILE IO**
+**FILE System**
+
+Below is a diagram illustrating disk partitions. We'll focus on one partition containing a file system and enumerate its internal blocks:
+
+```
++---------------------------------------------------+
+|                   Disk                            |
+|  +-----------+  +-----------+  +-----------+      |
+|  |Partition 1|  |Partition 2|  |Partition 3| ...  |
+|  +-----------+  +-----------+  +-----------+      |
++---------------------------------------------------+
+         |                |                |
+         v                v                v
+   (We will examine Partition 1 in detail)
+
+Partition 1 (File System Layout):
++----------------+----------------+----------------+-------------------+
+| Boot Block     | Super Block    | Inode Table    | Data Blocks       |
++----------------+----------------+----------------+-------------------+
+| Contains code  | File system    | Metadata for   | Actual file and   |
+| to boot OS     | metadata: size,| files/directories| directory data  |
+|                | block size,    | (permissions,  |                   |
+|                | etc.           | ownership, etc)|                   |
++----------------+----------------+----------------+-------------------+
+```
+
+Blocks:
+1. boot block: contains code to boot the operating system
+2. super block: contains parameters about the file system (e.g., size, block size)
+3. inode table: contains metadata for files and directories (e.g., permissions, ownership, timestamps)
+4. data blocks: contain the actual file and directory data
+
+
+**Inode Structures**
+
+i-node: information for a single file
+i-node table: table of i-nodes for all files in a file system
+
+```
++----------------+----------------+----------------+
+| i-node 1       | i-node 2       | i-node 3       |
++----------------+----------------+----------------+
+| Metadata for   | Metadata for   | Metadata for   |
+| file 1         | file 2         | file 3         |
++----------------+----------------+----------------+
+| Permissions    | Permissions    | Permissions    |
+| Owner          | Owner          | Owner          |
+| Timestamps     | Timestamps     | Timestamps     |
+| Size           | Size           | Size           |
+| Data Block Pointers | Data Block Pointers | Data Block Pointers |
++----------------+----------------+----------------+
+```
+Each i-node contains:
+- Permissions: Read, write, execute permissions for user, group, and others
+- Owner: User ID of the file owner
+- Timestamps: Creation, modification, and access times
+- Size: Size of the file in bytes
+- File Type: regular, directory, socket, pipe, symbolic link, etc.
+- Data Block Pointers: Pointers to the data blocks where the file's content is stored
+
+File System Organization:
+- organized as a tree structure starting from the root directory
+- each directory contains entries for files and subdirectories
+- directories are special files that contain i-node pointers to their contents
+
+Hard Links: directory entreis referring to i-nodes
+
+File System Tree Diagram:
+```
+/
+├── home
+│   ├── user1
+│   │   ├── file1.txt (i-node 1)
+│   │   └── file2.txt (i-node 2)
+│   └── user2         
+│       └── file3.txt (i-node 3)
+└── etc
+    ├── config1.conf (i-node 4)
+    └── config2.conf (i-node 5)
+``` 
+
+Path names for file reference: 
+1. absolute path: starts from the root directory (e.g., `/home/user1/file1.txt`)
+2. relative path: starts from the current directory (e.g., `../user2/file
+
+File Access Permissions: specified for one of three entities
+1. User (u)
+2. Group (g)
+3. Other (o)
+
+- Permission are read(r), write (w), and execute (x)
+
+    ls -li /usr/bin/more -> 4738356 -rwxr-xr-x 1 root root  40960 Oct  1  
+
+    In order:
+    - inode number: 4738356
+    - file type: regular file (-)
+    - permissions: rwx (user), r-x (group), r-x (other)
+    - number of hard links: 1
+    - owner: root
+    - group: root
+    - size: 40960 bytes
+    - last modification time: Oct 1
+
+**Symbolic Links**
+
+Special files with names of another file or directory
+- created using `ln -s target link_name`
+- used to create shortcuts or references to files/directories
 
