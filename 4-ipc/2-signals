@@ -24,3 +24,11 @@ create a table of common signals with their numbers, names, meanings, and defaul
 
 
 Signal disposition: action taken when a signal is received
+
+    Options: 
+    1. default action 
+    2. ignore
+    3. execute handler
+
+
+**Function Pointers**
