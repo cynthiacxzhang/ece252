@@ -1,0 +1,73 @@
+PART 1: COMPUTER organization
+
+Computer organization refers to the operational structure and components of a computer system. Here’s a simplified explanation from the system bus to general purpose registers:
+
+1. **System Bus**:  
+    The system bus is a communication pathway that connects the major components of a computer. It typically consists of three main types:
+    - **Data Bus**: Transfers actual data.
+    - **Address Bus**: Carries memory addresses.
+    - **Control Bus**: Sends control signals (read/write, interrupt, etc.).
+
+2. **CPU (Central Processing Unit)**:  
+    The CPU is the brain of the computer, connected to the system bus. It executes instructions and processes data.
+
+3. **Memory (RAM/ROM)**:  
+    Connected to the system bus, memory stores data and instructions for the CPU.
+
+4. **I/O Devices**:  
+    Input/Output devices (like keyboards, disks, network cards) communicate with the CPU and memory via the system bus.
+
+5. **Registers**:  
+    Inside the CPU, registers are small, fast storage locations. They temporarily hold data, instructions, and addresses.
+
+6. **General Purpose Registers**:  
+    These are a subset of CPU registers used for arithmetic, logic operations, and data manipulation. Examples include AX, BX, CX, DX in x86 architecture.
+
+**Summary Flow:**  
+System Bus ↔ CPU (with Registers) ↔ Memory  ↔ Timer  ↔ IO ↔ HDD    
+
+- timer, IO, HDD are peripheral devices
+
+Processors use registers for storage
+
+    GP: General Purpose Registers
+    PC: Program Counter
+    IR: Instruction Register
+    SP: Stack Pointer
+    SR: Status Register
+
+
+**Exceptions**
+Events that disrupt the normal flow of execution in a program
+
+3 types: 
+a. interrupts: 
+    External events (like I/O operations) that require immediate attention.
+b. traps:
+    Internal events (like division by zero) that require special handling.
+c. faults:
+    Errors in the program that can be corrected (like page faults).
+
+Handling exceptions - the process:
+1. interrupt controller detects an exception (part of the processor)
+- checks priority and sleects a handler function    
+2. stores execution content 
+- pushes PC, SR, GP registers onto the stack
+3. invokes the handler function
+- the handler function executes to address the exception
+4. restores execution content
+- pops the saved registers from the stack to resume normal execution
+
+Context switching: occurs when the kernel restores the state of a process after handling an exception
+
+Privileged Execution: certain operations (like accessing hardware) require privileged execution, which is only allowed in kernel mode
+
+1. unprivileged mode:
+    - user mode: restricts access to hardware and system resources
+2. privileged mode:
+    - kernel mode: allows full access to hardware and system resources
+
+- kernel mode: allows full access to hardware and system resources
+- handlers run in privileged mode to access hardware directly
+
+
