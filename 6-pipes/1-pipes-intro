@@ -20,9 +20,21 @@ lists pipe wordcount    // (which exec ls and exec wc)
 
 [ls -> stdout] -> (pipe) -> [stdin -> wc]
 
-- the pipe buffers data in kernel memory (temporarily store in memory)
-- what does it mean to buffer data?
-- the pipe is a unidirectional channel, so data flows in one direction only
-- the pipe is created by the shell, which manages the two processes
-- the shell connects the output of the first process (ls) to the input of the second process (wc)
-- the shell uses the pipe to transfer data between the two processes    
+    - the pipe buffers data in kernel memory (temporarily store in memory)
+    - what does it mean to buffer data?
+    - the pipe is a unidirectional channel, so data flows in one direction only
+    - the pipe is created by the shell, which manages the two processes
+    - the shell connects the output of the first process (ls) to the input of the second process (wc)
+    - the shell uses the pipe to transfer data between the two processes    
+
+To create a pipe in C, use the `pipe()` system call:
+
+```c
+int pipe(int pipefd[2]);
+```
+
+    pipefd[0]: set to the read end
+    pipefd[1]: set to the write end
+    
+- returns 0 on success, -1 on error
+
