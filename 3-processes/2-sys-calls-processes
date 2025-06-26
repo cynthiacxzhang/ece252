@@ -1,0 +1,74 @@
+**System Calls**
+
+fork() -> creates a copy of the calling process
+
+    copies uer memory: 
+    ```
+    +----------------+
+    | Stack           | 
+    +----------------+
+    | .....           | 
+    +----------------+
+    | Heap            |        
+    +----------------+
+    | Data            | <- copy-on-write, applies to stack and heap 
+    |                 | <- (pages are shared until modified)
+    +----------------+
+    | Text            | <- read only (shared between processes)
+    +----------------+
+    ```
+    
+    - returns: 
+        - 0 to the child process
+        - child's PID to the parent process
+        - -1 on error (e.g., if the process limit is reached)
+
+    - copies fd table, cwd, root directory, signal masks, and handlers
+
+e.g. 
+```c
+switch(fork()){
+    case 0: // child process
+        // child-specific code
+        break;
+    case -1: // error
+        // handle error
+        break;
+    default: // parent process
+        // parent-specific code, e.g., wait for child to finish
+        break;
+    }   
+```
+
+process termination -> ending a running process in an OS
+
+    system call: exit(int status)       // does not return
+
+    library call: #include <stdlib.h>
+                  exit(int status)      
+                  
+                  // defines EXIT_SUCCESS and EXIT_FAILURE
+    
+    this can be called from any point in the program
+    - also invoked by returning from main() 
+    - flushes stdio buffers, closes open files, and releases resources
+
+    returns status = 0 for success, non-zero for failure
+
+
+wait(int status) -> waits for any child to finish
+
+waitpid(pid_t pid, int *status, int options) -> waits for a specific child == PID to finish
+
+    - pid: 
+        - > 0: wait for the child with the specified PID
+        - 0: wait for any child in the same process group
+        - < -1: wait for any child whose process group ID is equal to the absolute value of pid
+        - -1: wait for any child process (default behavior)
+    
+    - status: pointer to an integer where the exit status of the child will be stored
+
+    returns:
+        - PID of the terminated child on success
+        - -1 on error (e.g., if there are no children to wait for)
+
