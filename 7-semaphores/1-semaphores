@@ -63,9 +63,100 @@ All system calls return 0 on success and -1 on error
         do A
         sem_post(sem) 
 
-    P2:
+    P2:         
         sem_wait(sem)
         do B
 
 2. Mutual Exclusion
 
+- ptoect critical sections of code (e.g. code that zccesses shared data)
+
+    init sem = 1
+
+    P1: 
+        sem_wait(sem)
+        critical section
+        sem_post(sem)
+
+    P2: 
+        sem_wait(sem)
+        critical section
+        sem_post(sem)
+
+- only 1 process can execute their critical section at a time
+
+3. Rendezvous
+
+- both processes must arrive before either continues
+
+    init sem1 = 0
+    init sem2 = 0
+
+    P1:
+        do A1
+        sem_post(sem1)
+        sem_wait(sem2)
+        do B1
+
+    P2:
+        do A2
+        sem_post(sem2)
+        sem_wait(sem1)
+        do B2
+    
+    synchronize A1 and A2 down the processes
+
+- extend to multiple processes
+
+    needs 1 semaphore per process
+    - each process posts to a different semaphore n-1 times
+    - each process waits the semaphores of all the other processes (once each)
+
+4. Barrier Synchronization
+
+- a rendezvous for n processes or threads using fewer semaphores
+
+    P1:
+        do A1           // sync on this level
+        barrier()
+        do B1
+
+    P2:
+        do A2
+        barrier()
+        do B2
+
+    ...
+
+    Pn:
+        do An
+        barrier()
+        do Bn
+
+Pseudocode for non-resuable barrier:
+
+    ```c
+    int count = 0;
+    const int n;
+    sem mutex = 1;
+    sem turnstile = 0;      // blocks first n-1 processes, when the nth arrives, they take tuyrns letting each other through
+
+    wait mutex
+    count++;
+    if (count < n):
+        post turnstile
+    
+    post mutex  
+    
+    wait turnstile // first n-1 block here
+    post turnstile // each unblocked process unblocks another
+    ```
+
+Final turnstile value = 0 (initial) + 1 post - n waits + n posts = 1
+- can't resue this barrier such as:
+
+    ```c
+    while (1){
+        work();
+        barrier();      // will only work the first time
+    }```

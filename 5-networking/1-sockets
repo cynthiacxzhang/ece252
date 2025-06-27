@@ -6,5 +6,133 @@ TPC/IP protocol stack:
 - Session: port number
 - Application: application protocol
 
-**Socket API**
+Sockets: an abstraction of a communication endpoint between two machines
+- allows processes to send and receive data over a network
 
+Each socket is identified by: 
+
+    1. IP address: identifies the host
+    2. port number: identifies the service/process on that host
+
+IP Addresses: internet protocol, addressing and routing
+
+    1. IPv4: 32 bits
+    2. IPv6: 128 bits
+
+DNS: domain name system, maps host names to IP addresses
+- a lookup returns the list of IP addresses associated with a hostname
+
+    1. localhost: 127.0.0.1
+    2. google.com: 8.8.8.8
+
+- DNS lookup call
+
+    getaddrinfo(hostname, service, hints, result)
+
+    freeaddrinfo(result)
+    - frees memory allocated by getaddrinfo()
+
+    - hostname: name of the host to lookup
+    - service: name of the service to lookup
+    - hints: hints for the lookup
+    - result: pointer to the result of the lookup (set to linked list of addresses)
+
+TCP: transmission control protocol, reliable and ordered delivery of data
+- end to end connection
+
+Ports: network endpoints on a host (like a phone extension)
+- 16 bit numbers
+- applications bind to ports
+- ports 0 - 1023 are reserved for well-known services
+- ports 1024 - 49151 are available registered services
+- ports 49152 - 65535 are available for dynamic port allocation
+
+TCP/IP connection: basic TCP workflow
+
+Client Process: 
+    1. client creates socket
+    2. client connects to server
+    3. client sends data to server
+    4. server receives data from client
+    5. server sends data to client
+    6. client receives data from server
+    7. client closes socket
+    8. server closes socket
+
+Server Process: 
+
+    1. server creates socket
+    2. server binds socket to port
+    3. server listens for incoming connections
+    4. server accepts incoming connections
+    5. server sends data to client
+    6. client receives data from server
+    7. client sends data to server
+    8. server receives data from client
+    9. server closes socket
+    10. client closes socket
+
+## System Calls for Sockets
+
+1. socket(int domain, int type, int protocol)       // both client and server
+
+    - domain: protocol family
+    - type: socket type
+    - protocol: protocol number
+
+    socket() returns a socket file descriptor, -1 on error
+
+2. bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)   //server
+
+    - sockfd: socket file descriptor
+    - addr: address to bind to (socket address)
+    - addrlen: length of address
+
+    bind() returns 0 on success and -1 on error
+
+3. listen(int sockfd, int backlog)  // server
+
+    - sockfd: socket file descriptor
+    - backlog: maximum number of pending connections
+
+    listen() returns 0 on success and -1 on error
+
+4. accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)    // server
+
+    - sockfd: socket file descriptor
+    - addr: address to bind to (socket address)
+    - addrlen: length of address
+
+    accept() returns a new socket file descriptor for the connection
+
+5. connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen)  //client
+
+    - sockfd: socket file descriptor
+    - addr: address to bind to (socket address)
+    - addrlen: length of address
+
+    connect() returns 0 on success and -1 on error
+
+6. send(int sockfd, const void *buf, size_t len, int flags) // ssize_t
+
+    - sockfd: socket file descriptor
+    - buf: buffer to send
+    - len: length of buffer
+    - flags: flags
+
+    send() returns the number of bytes sent, -1 on error
+    - can send arbitrarily large data
+
+7. recv(int sockfd, void *buf, size_t len, int flags)   // ssize_t
+
+    - sockfd: socket file descriptor
+    - buf: buffer to receive
+    - len: length of buffer
+    - flags: flags
+
+    recv() returns the number of bytes received
+    - data may be deceived in multiple segments
+
+8. close(int sockfd)
+
+    - sockfd: socket file descriptor    
