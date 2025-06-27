@@ -1,3 +1,49 @@
 **Signal Handlers**
 
 A signal handler is a function that is called when a signal is received by a process
+- executes a custom action instead of the default action
+
+System call: 
+
+    int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
+
+        parameter analysis: 
+        - signum: signal number
+        - act: pointer to a struct sigaction
+        - oldact: pointer to a struct sigaction (previous behavior of the signal)
+
+    ```c
+    struct sigaction {
+        
+        void(*sa_handler)(int);
+
+    }   // installs a sign handler
+    ```
+
+    sa_handler -> function to execute when signal is received
+
+    returns: 0 on success, -1 on error
+
+    sigaction return: 0 on success, -1 on failure
+
+**Signal Handling Control Diagram**
+
+main program -> signal arrives -> kernel interrupts -> jump to signal handler-> execute handler -> return to main program -> main program resumes
+
+Note: handlers should only invoke through re-entrant functions
+
+    Re-entrant functions: functions that can be called recursively
+    - multiple instaces of a function can be active at the same time
+    - can be interrupted and called again
+    - can't modify global or statis variables (stored on the stack)
+    - does not depend on shared states between processes
+
+Signal handlers need to be multi-thread safe and asynch safe
+
+Other system calls involving signals: 
+
+1. kill(pid_t pid, int sig): sends a signal to a process with PID
+
+2. raise(int sig): sends a signal to the current process
+
+3. pause(): suspends the current process until a signal is received (sleeps)

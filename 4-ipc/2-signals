@@ -33,4 +33,10 @@ Signal disposition: action taken when a signal is received
 
 **Function Pointers**
 
+A function pointer is a variable that holds the address of a function
+- can be used to store the address of a function
+- can be used to call a function
+- can be used to pass a function as an argument to another function
+
+
 
