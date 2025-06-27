@@ -133,7 +133,7 @@ All system calls return 0 on success and -1 on error
         barrier()
         do Bn
 
-Pseudocode for non-resuable barrier:
+## Pseudocode for non-resuable barrier:
 
     ```c
     int count = 0;
@@ -147,7 +147,7 @@ Pseudocode for non-resuable barrier:
         post turnstile
     
     post mutex  
-    
+
     wait turnstile // first n-1 block here
     post turnstile // each unblocked process unblocks another
     ```
@@ -160,3 +160,10 @@ Final turnstile value = 0 (initial) + 1 post - n waits + n posts = 1
         work();
         barrier();      // will only work the first time
     }```
+
+Race conditions: 
+- where multiple threads try to access a shared resource at the same time
+
+Psudocode for a reusable barrier with a race condition: 
+- the last process to unblock does an extra wait
+

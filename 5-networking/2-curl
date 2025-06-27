@@ -1,0 +1,67 @@
+**Curl**
+
+The CURL library
+- libcurl: library for transferring data with URLs for internet protocols (especially HTTP and FTP)
+
+- start and end programs with:
+
+    curl_global_init()
+    curl_global_cleanup()
+
+- interfaces: 
+
+    curl_easy() - blocking transfers
+    curl_multi() - non-blocking transfers
+
+## curl_easy
+
+1. get handle
+
+    CURL *handle = curl_easy_init();
+
+2. set options
+
+    curl_easy_setopt(handle, CURLOPT_URL, url);
+    - copies string arguments
+    - is sticky
+    curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_callback);
+    - sets callback function
+
+3. do transfer
+
+    CURL code result = curl_easy_perform(handle);
+    - by default it sends the data to stdout
+
+4. cleanup
+
+    curl_easy_cleanup(handle);
+
+
+## Callback Functions
+
+1. write_callback
+
+    size_t write_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {}
+
+    - ptr - pointer to the data
+    - size - size of each element
+    - nmemb - number of elements
+    - userdata - pointer to user data
+
+    - should copy received data intro your userdata
+    - should return number of bytes copied
+
+2. read_callback
+
+    size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {}   
+
+    - should copy received data into your userdata
+    - should return number of bytes copied
+
+3. register callback function and userdata
+
+    curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, write_callback);
+    curl_easy_setopt(handle, CURLOPT_WRITEDATA, &buffer);
+
+    - &buffer: pointer to the buffer where the data will be stored
+

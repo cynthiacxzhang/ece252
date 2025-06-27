@@ -1,1 +1,65 @@
 **Message Queues**
+
+Message queues are a type of inter-process communication (IPC) that allows processes to communicate asynchronously
+- useful for passing data between related processes that are running on the same system
+- identified by a unique identifier
+- created by the system
+- processes can send messages to a message queue, and retrieve messages from a message queue
+
+The main operations on a message queue are:
+- `mq_open()`: creates a message queue
+- `mq_send()`: sends a message to a message queue
+- `mq_receive()`: retrieves a message from a message queue
+- `mq_close()`: closes a message queue
+- `mq_unlink()`: deletes a message queue
+
+Taxonomy: communication - data transfer - message 
+
+## System Calls
+
+```c
+int mq_open(const char *name, int oflag, mode_t mode, struct mq_attr *attr);
+```
+    - name starts with / but is not a file
+    - oflag: O_RDONLY, O_WRONLY, O_RDWR
+    - mode: file permissions
+
+        0600: user can read and write
+        0400: user can read
+        0200: user can write
+
+    - attr: message queue attributes
+
+    struct mq_attr {
+        long mq_flags;
+        long mq_maxmsg;
+        long mq_msgsize;
+        long mq_curmsgs;
+    }
+
+    returns a message queue descriptor (similar to a file descriptor)
+
+## To use message queues
+
+```c
+int mq_send(mqd_t mqdes, const char *msg_ptr, size_t msg_len, unsigned int msg_prio);
+```
+
+```c
+ssize_t mq_receive(mqd_t mqdes, char *msg_ptr, size_t msg_len, unsigned int *msg_prio);
+```
+
+    - removes oldest message of highest priority
+    - if msg_prio is not NULL, copies message priority
+    - returns # of bytes received
+
+```c
+int mq_close(mqd_t mqdes);
+```
+
+```c
+int mq_unlink(const char *name);
+``` 
+
+    - deletes message queue
+    - mqueue is only closed when all descriptors are closed
