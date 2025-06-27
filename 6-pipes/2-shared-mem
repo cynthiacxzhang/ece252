@@ -1,2 +1,98 @@
 **Shared Memory**
 
+Applies to System V IPC
+
+Shared memory: processes share a common memory region (read and write)
+- very fast, but requires synchronization to avoid conflicts and to know when data is valid/available
+
+Shared memory: one process writes, another reads
+
+Taxonomy: 
+
+    communication - shared memory - shmem
+
+The MMU (memory management unit) is the part of the CPU that handles memory access
+
+    Responsible for mapping shared page frames into both processes\ virtual address spaces
+
+    ```
+    +---------------+
+    |  Process A   |
+    +---------------+
+    |  +-----------+  |
+    |  |  Stack    |  |
+    |  +-----------+  |
+    |               |
+    |  +-----------+  |
+    |  |  Heap     |  |
+    |  +-----------+  |
+    |               |
+    |  +-----------+  |
+    |  |  Data     |  |
+    |  +-----------+  |
+    |               |
+    |  +-----------+  |
+    |  |  Text     |  |
+    |  +-----------+  |
+    +---------------+
+             ^
+             |
+             |
+    +---------------+
+    |  MMU         |        // shmget creates the shared memory
+    +---------------+
+    |  +-----------+  |
+    |  | Shared    |  |
+    |  |  Page     |  |
+    |  |  Frame    |  |
+    |  +-----------+  |
+    +---------------+
+             |
+             |      // shmat() attaches it to the address space
+             v
+    +---------------+
+    |  Process B   |
+    +---------------+
+    |  +-----------+  |
+    |  |  Stack    |  |
+    |  +-----------+  |
+    |               |
+    |  +-----------+  |
+    |  |  Heap     |  |
+    |  +-----------+  |
+    |               |
+    |  +-----------+  |
+    |  |  Data     |  |
+    |  +-----------+  |
+    |               |
+    |  +-----------+  |
+    |  |  Text     |  |
+    |  +-----------+  |
+    +---------------+
+    
+Shared memory allows fast inter-process communication but it requires synchronization to avoid conflicts and to know when data is valid/available
+
+To create a region of shared memory:
+
+    ```c
+    int shmget(key_t key, size_t size, int shmflg);
+
+        IPC_PRIVATE: Create a private shared memory segment
+        #bytes: Size of the shared memory segment in bytes
+        0600: Permissions for the shared memory segment
+
+    ```
+    - `key`: Unique identifier for the shared memory segment.
+    - `size`: Size of the shared memory segment in bytes.
+    - `shmflg`: Flags for permissions and creation options (e.g., `IPC_CREAT | 0666`)
+
+    Example:
+    ```c
+    int shmid = shmget(IPC_PRIVATE, 1024, IPC_CREAT | 0666);
+    if (shmid == -1) {
+        perror("shmget failed");
+        exit(1);
+    }
+    ```
+
+    

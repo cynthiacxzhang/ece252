@@ -1,0 +1,10 @@
+**File Permissions**
+
+A file permissions code such as 0644 is interpreted as follows:
+
+* The first digit, 0, specifies the special permissions. In this case, there are no special permissions.
+* The second digit, 6, specifies the owner's permissions: read (4), write (2), and execute (1) permissions, which in octal is 6.
+* The third digit, 4, specifies the group's permissions: read (4) permission, which in octal is 4.
+* The fourth digit, 4, specifies the permissions for others: read (4) permission, which in octal is 4.
+
+So, in this case, the file owner has read and write permissions, and the group and others have read-only permissions.
