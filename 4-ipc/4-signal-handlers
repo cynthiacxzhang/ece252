@@ -1,0 +1,3 @@
+**Signal Handlers**
+
+A signal handler is a function that is called when a signal is received by a process

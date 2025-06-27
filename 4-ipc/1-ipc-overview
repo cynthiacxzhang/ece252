@@ -26,4 +26,3 @@ Aside: glimpse into unit 6
     - data is buffered in the kernel
     - can be anonymous (between related processes) or named (between unrelated processes)
 
-    
