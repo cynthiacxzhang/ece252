@@ -1,4 +1,10 @@
-**Sockets**
+**Intro to Networking**
 
 TPC/IP protocol stack: 
+- Transport: TCP/UDP
+- Presentation: IP
+- Session: port number
+- Application: application protocol
+
+**Socket API**
 

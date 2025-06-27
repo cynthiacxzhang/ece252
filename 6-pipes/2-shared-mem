@@ -15,7 +15,6 @@ The MMU (memory management unit) is the part of the CPU that handles memory acce
 
     Responsible for mapping shared page frames into both processes\ virtual address spaces
 
-    ```
     +---------------+
     |  Process A   |
     +---------------+
@@ -80,13 +79,15 @@ To create a region of shared memory:
         IPC_PRIVATE: Create a private shared memory segment
         #bytes: Size of the shared memory segment in bytes
         0600: Permissions for the shared memory segment
-
     ```
+
+
     - `key`: Unique identifier for the shared memory segment.
     - `size`: Size of the shared memory segment in bytes.
     - `shmflg`: Flags for permissions and creation options (e.g., `IPC_CREAT | 0666`)
 
     Example:
+
     ```c
     int shmid = shmget(IPC_PRIVATE, 1024, IPC_CREAT | 0666);
     if (shmid == -1) {
@@ -95,4 +96,46 @@ To create a region of shared memory:
     }
     ```
 
-    
+To attach a region:
+
+    ```c
+    void *shmat(int shmid, const void *shmaddr, int shmflg);
+    ```
+
+    - `shmid`: The shared memory segment ID.
+    - `shmaddr`: The address at which to attach the shared memory segment.
+    - `shmflg`: Flags for permissions and creation options (e.g., `SHM_RDONLY`)
+
+    Returns: the address that the region maps to
+
+To detach a region:
+
+    ```c
+    int shmdt(const void *shmaddr);     // removes the region from the address
+    ```
+
+    - `shmaddr`: The address of the shared memory segment to detach.
+
+    Returns: 0 on success, -1 on failure
+
+To destroy a region:
+
+    ```c
+    int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+    ```
+
+    - `shmid`: The shared memory segment ID
+    - `cmd`: The command to perform (e.g., `IPC_RMID` to remove the segment)
+    - `buf`: A buffer to store information about the shared memory segment
+
+    Marks the region for destruction when the last process detaches from it
+
+Refer to class code: [shmem.c]
+- when a process forks, the child "inherits" the shared memory segment and regions
+- shmem is persistent - you should destroy it when done
+
+    > ipcs -l               // list any ipc objects
+
+    > ipcrm -m <shmid>      // remove the shared memory segment
+
+    > ipcrm -a              // remove all ipc segments
