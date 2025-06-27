@@ -1,0 +1,40 @@
+**Semaphores**
+
+## Overview
+
+Semaphore: variable used to synchronize processes or threads
+- an integer value that cannot go below zero
+
+Note: not a form of IPC similar to the others (pipes, FIFOs, message queues)
+- a counter used to provide access to a shared data object for multiple processes
+
+## Example
+
+To obtain a shared resource, a process needs to:
+
+1. test the semaphore that controls the resource
+2. if the semaphore is positive, the process can use the resource
+
+    in this case, the process decrements the semaphore value by 1
+    - indicates that one unit of the resource is being used
+
+3. if the semaphore is zero, the process must wait until another process releases the resource
+4. if the semaphore is negative, the process must wait until another process increments the semaphore to greater than 0
+
+    when the process wakes, it returns to step 1
+
+When a process is done with a shared resource that is controlled by a semaphore, the value is incremented by 1
+
+**System Calls for Semaphores**
+
+1. sem_wait(sem_t *sem)
+
+    decrements the semaphore value by 1
+    - if sem was already 0, the call blocks until the sem gets incremented
+
+2. sem_post(sem_t *sem)
+
+    increments the semaphore value by 1
+    - if sem was 0, a blocked process (or thread) is unblocked
+    - the order of unblocking is undefined
+
