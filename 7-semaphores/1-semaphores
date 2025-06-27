@@ -38,3 +38,34 @@ When a process is done with a shared resource that is controlled by a semaphore,
     - if sem was 0, a blocked process (or thread) is unblocked
     - the order of unblocking is undefined
 
+3. sem_init(sem_t *sem, int pshared, unsigned int value)
+
+    pshared: 
+        0 for shared between threads (as a global variable or dynamically allocated)
+        1 for shared between processes (in a shared memory region)
+
+3. sem_destroy(sem_t *sem)
+
+    destroys a semaphore
+    - there should be no blocked processes or threads
+
+All system calls return 0 on success and -1 on error
+
+**Use Cases**
+
+1. Serialization
+
+- e.g. making sure that process 1 precedes process 2
+
+    init sem = 0
+
+    P1: 
+        do A
+        sem_post(sem) 
+
+    P2:
+        sem_wait(sem)
+        do B
+
+2. Mutual Exclusion
+

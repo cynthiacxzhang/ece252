@@ -3,7 +3,7 @@
 Applies to System V IPC
 
 Shared memory: processes share a common memory region (read and write)
-- very fast, but requires synchronization to avoid conflicts and to know when data is valid/available
+- very fast -> fastest form of IPC, but requires synchronization to avoid conflicts and to know when data is valid/available
 
 Shared memory: one process writes, another reads
 
