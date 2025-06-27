@@ -17,6 +17,15 @@ Pipes can be used only between processed that have a common ancestor
     - said process calls fork
     - pipe is used between the parent and the child
 
+
+Pipes are unidirectional
+- If all write fd's are closed, then read returns 0 when the pipe empties (instead - of blocking)
+If all read fd's are closed, then write returns -1 with errno set to SIGPIPE
+
+Note: 
+- pipes are "unnamed" and are shared by related processes (parent, child)
+- FIFOs are similar but have a name and are shared by unrelated processes
+
 Byte Stream: a sequence of bytes that can be read or written
 - no structure or boundaries, just a continuous flow of data
 - processes can read and write data in a stream-like manner
@@ -56,3 +65,6 @@ int pipe(int pipefd[2]);
     
 - returns 0 on success, -1 on error
 
+Flow of data from parent to child:
+- if the parent is sending the data to the child, after forking, the parent writes to the write end of the pipe and closes its own read end (fd0)
+- the child reads from the read end of the pipe and closes its own write end (fd1)
