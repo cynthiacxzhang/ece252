@@ -7,12 +7,24 @@ Pipes: mechanism for inter-process communication (IPC) in Unix-like systems
 - implemented as a buffer in the kernel
 - data is transferred in a byte stream format
 
+Note: oldest form of UNIX IPC
+
+Pipes can be used only between processed that have a common ancestor
+- what does this mean?
+
+    Typically:
+    - pipe is created by a process
+    - said process calls fork
+    - pipe is used between the parent and the child
+
 Byte Stream: a sequence of bytes that can be read or written
 - no structure or boundaries, just a continuous flow of data
 - processes can read and write data in a stream-like manner
 
 
-Taxonomy: communication - data transfer - byte stream
+## Taxonomy
+
+communication - data transfer - byte stream
 
 [ > ls \ wc -l]         // the shell forks two processes
 lists pipe wordcount    // (which exec ls and exec wc)
@@ -27,14 +39,20 @@ lists pipe wordcount    // (which exec ls and exec wc)
     - the shell connects the output of the first process (ls) to the input of the second process (wc)
     - the shell uses the pipe to transfer data between the two processes    
 
+## Code 
+
 To create a pipe in C, use the `pipe()` system call:
 
 ```c
+# define PIPE_BUF 512           // specifies the size of the pipe buffer
+
 int pipe(int pipefd[2]);
 ```
 
     pipefd[0]: set to the read end
     pipefd[1]: set to the write end
+
+    The output of fd 1 is the iput for fd 0
     
 - returns 0 on success, -1 on error
 
