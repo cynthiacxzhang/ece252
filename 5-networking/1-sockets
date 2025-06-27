@@ -136,3 +136,32 @@ Server Process:
 8. close(int sockfd)
 
     - sockfd: socket file descriptor    
+
+## Byte Order
+
+- big endian: most significant byte first
+- little endian: least significant byte first
+
+Given: 0x12345678
+
+    big endian: 0x78 0x56 0x34 0x12
+
+    little endian: 0x12 0x34 0x56 0x78
+
+- big endian: network byte order
+- little endian: host byte order
+
+- network byte order: order of bytes used for network communication
+- host byte order: order of bytes used for host operation
+
+## Endian Conversion
+
+Always convert multibyte ints to/from network byte order
+
+Longs: 4 bytes, 32 bits
+- htonl(): convert host byte order to network byte order
+- ntohl(): convert network byte order to host byte order
+
+Shorts: 2 bytes, 16 bits
+- htons(): convert host byte order to network byte order
+- ntohs(): convert network byte order to host byte order
