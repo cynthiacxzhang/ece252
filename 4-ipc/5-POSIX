@@ -1,0 +1,17 @@
+**POSIX Overview**
+
+IPC: inter-process communication
+
+System V vs POSIX
+
+POSIX: Portable Operating System Interface
+- a set of standards for maintaining compatibility between operating systems
+
+Both System V and POSIX IPC: message queues, shared memory, semaphores, and shared file locks
+- POSIX IPC is a subset of System V IPC
+
+System V: IPC facilities in almost all Unix systems
+
+Both types of IPC persist in the kernel
+- kernel limits the number of IPC resources that can be created at a time
+- kernel limits the number of IPC resources that can be shared between processes
