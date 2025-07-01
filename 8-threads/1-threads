@@ -1,0 +1,44 @@
+**Threads**
+
+Threads are a way to run multiple tasks at the same time.
+
+Each process has one or more threads of execution 
+- concurrent paths through the code
+
+Per thread execution context:
+
+- registers (PC, status, GP x0-x31)
+- stack
+- errno
+- priority
+- signal mask
+
+Shared resources 
+
+- memory (data section and heap)
+- file descriptor table
+- process id and group id
+- cwd
+- signal dispositions
+
+Memory Map: 
+
+    +--------------------+
+    | Mainthread Stack   | <- grows downwards
+    +--------------------+
+    | Thread 3 Stack.    | 
+    +--------------------+
+    | Thread 2 Stack.    |
+    +--------------------+
+    | Thread 1 Stack.    |
+    +--------------------+
+    | Shared mem * libs  |
+    +--------------------+
+    | Heap               | <- grows upwards
+    +--------------------+
+    | Data               |
+    +--------------------+
+    | Text               |
+    +--------------------+
+
+ 

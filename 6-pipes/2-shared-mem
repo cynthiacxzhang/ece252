@@ -69,8 +69,6 @@ The MMU (memory management unit) is the part of the CPU that handles memory acce
     |  +-----------+  |
     +---------------+
     
-Shared memory allows fast inter-process communication but it requires synchronization to avoid conflicts and to know when data is valid/available
-
 To create a region of shared memory:
 
     ```c
