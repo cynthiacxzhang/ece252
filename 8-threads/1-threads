@@ -48,8 +48,8 @@ Memory Map:
  - POSIX threads (pthread) functions return 0 on success, postive value on error
  - any return value needs to be dynamically allocated or a global variable (not local!!)
 
+
  **Creation and Termination**
 
     int pthread_create(threadid, attr, start_routine, arg)
 
-    
