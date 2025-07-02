@@ -18,6 +18,12 @@ sem_t spaces;
 sem_t filled;
 pthread_mutex_t mutex;
 
+/**
+ * Produce an item and add it to the buffer.
+ *
+ * @param id the id of the producing thread
+ * @return the produced item
+ */
 int produce(int id)
 {
     static int count = 0;
@@ -30,6 +36,17 @@ void consume(int id, int number)
 {
     printf("Consumer %d consumed %d.\n", id, number);
 }
+
+/**
+ * Producer thread function that generates items and adds them to a bounded buffer.
+ *
+ * @param arg A pointer to the integer ID of the producing thread.
+ *
+ * The function continuously produces a fixed number of items, waits for space
+ * in the buffer, writes the item into the buffer, and signals that an item
+ * has been added. The buffer access is synchronized using semaphores and a mutex
+ * to ensure mutual exclusion.
+ */
 
 void *producer(void *arg)
 {
@@ -50,6 +67,16 @@ void *producer(void *arg)
     }
 }
 
+/**
+ * Consumer thread function that continuously consumes items from a bounded buffer.
+ *
+ * @param arg A pointer to the integer ID of the consuming thread.
+ *
+ * The function continuously consumes a fixed number of items, waits for an item
+ * to be available in the buffer, takes the item from the buffer, and signals that
+ * a slot has been freed up. The buffer access is synchronized using semaphores and a
+ * mutex to ensure mutual exclusion.
+ */
 void *consumer(void *arg)
 {
     int *id = (int *)arg;
