@@ -51,5 +51,31 @@ Memory Map:
 
  **Creation and Termination**
 
-    int pthread_create(threadid, attr, start_routine, arg)
+    int pthread_create(pthrad_t *threadid, attr, void *(*s_t)(void *) void * start_routine, void *const pthread_attr_t *arg)
+
+    attributes include: 
+    - stack size and location
+    - priority and scheduling policy
+    - joinable state
+
+Threads terminate when: 
+
+    1. they return from start_routine()
+    2. they call pthread_exit() (void *retval)
+    3. they call pthread_cancel() (ptread_t tid)
+    4. the process terminates by: 
+        - calling exit() from any thread
+        - the main thread returns from main()
+
+A terminated thread should:
+    
+    1. be joined by pthread_join(pthread_t tid, void **retval)
+
+    OR
+
+    2. have been marked detached at thread creation or by calling pthread_detach(pthread_self())
+
+**Thread Cancellation**
+
+
 
