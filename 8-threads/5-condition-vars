@@ -1,0 +1,25 @@
+**Condition Variables**
+
+A condition variable is a synchronization tool used to allow threads to wait for specific conditions or events to occur, typically involving shared resources.
+
+Situation: combine a mutex unlock wiht a wait for events
+- can be signalled (like post - wakes 1 blocked thread) or broadcasted (wakes all blocked threads)
+- a signal or broadcase is lost if there are no threads blocked (waiting)
+
+    Thread A:
+        lock mutex
+        while (!condition):
+            wait on condition variable, mutex
+        do something
+        unlock mutex
+
+    Thread B:
+        lock mutex
+        update state
+        if(condition)   // needed by thread A
+            signal/broadcast condition variable
+        unlock mutex
+    
+    Note: waiting a condition variable implicitly unlocks the mutex before blocking, and relocks mutex after unblocking
+
+- Thread A needs to recheck the condition after waiting because another thread, C, could have locked the mutex first and changed the condition.
