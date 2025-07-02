@@ -1,0 +1,4 @@
+**Atomic Operations**
+
+Atomic operations: a sequence of operations executed as one indivisible step
+- usually involved memory operations that can't be interrupted by another thread
