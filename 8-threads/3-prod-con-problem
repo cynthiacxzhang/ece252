@@ -2,3 +2,94 @@
 
 1 or more threads produce data, 1 or more threads consume that data
 - solved with the bounded buffer (circular queue)
+
+    Situation: bounded buffer
+    1. a producer thread generates data, places it in a fixed size buffer
+    2. a consumer thread removes data from the buffer to process it
+
+    The buffer has limited capacity, so:
+    - the producer must wait if the buffer is full
+    - the consumer must wait if the buffer is empty
+
+    Requires: mutual exclusion (mutex) to access the buffer
+    - synchronization so the components wait respectively
+
+Producer Thread: 
+
+    loop: 
+    1. produce data
+    2. add data to buffer
+
+Consumer Thread:
+
+    loop:
+    1. get data from buffer
+    2. process data
+
+Question: how do they wait for an empty or full buffer entry?
+Answer: use semaphores!!
+
+
+    +---------------+
+    |  Producer    |
+    +---------------+
+                 |
+                 |
+                 v
+    +---------------+
+    |  Buffer      |
+    |  (circular    |
+    |   queue)     |
+    +---------------+
+                 |
+                 |
+                 v
+    +---------------+
+    |  Consumer    |
+    +---------------+
+
+    Semaphore filled, initial = 0
+    Semaphore empty, initial = BUFFER_SIZE (n)
+
+
+## Solving with Bounded Buffer
+
+    New Producer Loop:
+
+        1. produce data
+        2. wait on empty semaphore
+        3. *add data to buffer
+        4. post filled semaphore        // post = signal
+
+    New Consumer Loop:
+
+        1. wait on filled semaphore
+        2. *get data from bugger
+        3. post empty semaphore
+        4. consume/process data
+
+Note: need a mutex if there are multiple producers or multiple consumers!!
+
+Adding into and retrieving from the buffer:
+
+    int pIndex = 0;
+    int cIndex = 0;
+    const n mutex m;
+    
+    Adding into buffer:
+
+        lock m                      // critical section        
+            buffer[pIndex] = data;
+            pIndex = ++pIndex % n;
+        unlock m
+
+    Getting from buffer:
+
+        lock m                      // critical section
+            data = buffer[cIndex];
+            cIndex = ++cIndex % n;
+        unlock m
+
+        Note: could use separate mutexes for producers and consumers
+
+    
