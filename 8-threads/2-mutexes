@@ -1,0 +1,40 @@
+**Mutexes**
+
+Mutexes: specialized semaphores for protecting critical sections
+- stands for "mutual exckusion"
+- e.g. protects code that accesses shared memory to prevent race conditions in multithreaded programs
+
+    two states:
+    1. locked - no other threads can access the critical section
+    2. unlocked - other threads can access the critical section
+
+Initializing a mutex:
+
+    static (for globals):
+        pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+    dynamic (for local variables and dynamically allocated vars):
+        mthread_mutex_init(&mutex, &attr);      // NULL for attr = use defaults
+
+**Locking and Unlocking**
+
+    ```c
+    int pthread_mutex_lock(&mutex);         // blocking
+
+    int pthread_mutex_unlock(&mutex);
+
+    int pthread_mutex_trylock(&mutex);      // non-blocking
+
+Destroying: 
+
+    int pthread_mutex_destroy(&mutex);      // there should be no threads blocked on mutex
+    ```
+
+Other initializers:
+
+    PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+    - mutex owner can lock multiple times
+    - NP = non portable without blocking (should unlock an equal amount of times)
+
+    PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP;
+    - only the mutex owner can unlock it
