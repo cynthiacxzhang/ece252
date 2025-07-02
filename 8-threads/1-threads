@@ -77,5 +77,26 @@ A terminated thread should:
 
 **Thread Cancellation**
 
+To set thread cancellation type: 
 
+    int pthread_setcanceltype(int type, int *oldtype);
+
+    - type: PTHREAD_CANCEL_ASYNCHRONOUS (cancel any time, usually immediate)
+    
+            PTHREAD_CANCEL_DEFERRED (cancel when thread calls a cancallation point)
+    
+    - cancellation points: 
+        - pthread_testcancel()
+        - accept(), close(), open(), pause(), fopen(), getaddrinfo(), printf()
+
+
+A thread can add cleanup handlers to release resources
+
+    ```c
+    void pthread_cleanup_push(void (*routine)(void *), void *arg);
+    void pthread_cleanup_pop(int execute);      // execute handler if nonzero
+    ```
+
+    - push and pop must be paired!
+    - handlers can be stacked
 
