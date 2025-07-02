@@ -2,3 +2,41 @@
 
 Atomic operations: a sequence of operations executed as one indivisible step
 - usually involved memory operations that can't be interrupted by another thread
+
+    indivisible: execute entirely or not at all
+    atomic: can't be interrupted by another thread
+    - this eliminates race conditions
+
+AOs allow us to avoid locks for simple updates:
+
+    ```c
+    pthread_mutex_lock(&mutex);
+    value = value + constant;
+    pthread_mutex_unlock(&mutex);
+    ```
+
+Note: gcc atomic operations
+
+    type __sync_fetch_and_add(type *ptr, type value, int memory_order)
+
+        returns old value
+
+    type --sync_add_and_fetch(type *ptr, type value, int memory_order)
+
+        e.g. int oldCount = __sync_fetch_and_add(&count, 1);
+
+```c
+// cpp11 standard libraries
+#include <stdatomic.h>
+#include <thread.h>
+```
+
+- types: atomic_bool, atomic_int, atomic_llong, atomic_char
+- operations: atomic_fetch_add(&atomic_object, value)       // add, sub, and, or, xor
+
+    returns old value
+
+Atomic operations from gg are implemented with atomic machine instructions where possible
+- otherwise implemented wiht memory barriers
+
+
