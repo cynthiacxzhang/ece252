@@ -42,8 +42,8 @@ Destroying: once a mutex is no longer needed
     int pthread_mutex_destroy(&mutex);      // there should be no threads blocked on mutex
     ``` 
 
-Other initializers:
-- non portable extensions
+**Other initializers**
+- non portable extensions (not part of the POXIS standard)
     
     PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
     - allows a thread to lock the same mutex multiple times, but it must unlock it the same number of times
@@ -63,7 +63,8 @@ Other initializers:
         E.g. if you call unlock() once but had initially locked it twice, the mutex stays locked 
         - other threads cannot proceed!
 
-    - NP = non portable without blocking 
+    - NP = non portable without blocking (what does this mean??)
+    - a nonstandard mutex tyope thgat prevent blocking in scenarios where a regular mutex would block or deadlock
 
     Note: a normal (non recursive) mutex will **deadlock** if the same thread tires to lock it twice
 
