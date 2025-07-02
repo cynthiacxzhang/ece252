@@ -4,37 +4,69 @@ Mutexes: specialized semaphores for protecting critical sections
 - stands for "mutual exckusion"
 - e.g. protects code that accesses shared memory to prevent race conditions in multithreaded programs
 
-    two states:
-    1. locked - no other threads can access the critical section
-    2. unlocked - other threads can access the critical section
+Importance: prevents data corruption, undefined behavior, and race conditions
+- ensures exclusive access to shared resources in concurrent programs
+
+A mutex ensures only one thread at a time can access the protected code section
+
+- mutex has two states:
+    1. locked - one thread holds the mutex, others trying to lock it will block or fail
+    2. unlocked - any thread can acquire the lock
 
 Initializing a mutex:
 
-    static (for globals):
+    ```c
+   // static (for globals):
         pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-    dynamic (for local variables and dynamically allocated vars):
+    // dynamic (for local variables and dynamically allocated vars):
         mthread_mutex_init(&mutex, &attr);      // NULL for attr = use defaults
+    ```
 
 **Locking and Unlocking**
 
-    ```c
-    int pthread_mutex_lock(&mutex);         // blocking
+Locking = blocking -> locks the thread until the mutex becomes available
+Unlocking = releasing the mutex so another thread can enter the critical section
+Trylock = attempts to acquire the lock, returns immediately if it's already locked
+
+    ```c        
+    int pthread_mutex_lock(&mutex);         // lock = blocking
 
     int pthread_mutex_unlock(&mutex);
 
     int pthread_mutex_trylock(&mutex);      // non-blocking
 
-Destroying: 
+Destroying: once a mutex is no longer needed
+- must enxure no threads are waiting on the mutex before destroying it
 
     int pthread_mutex_destroy(&mutex);      // there should be no threads blocked on mutex
-    ```
+    ``` 
 
 Other initializers:
-
+- non portable extensions
+    
     PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
-    - mutex owner can lock multiple times
-    - NP = non portable without blocking (should unlock an equal amount of times)
+    - allows a thread to lock the same mutex multiple times, but it must unlock it the same number of times
+
+    pthread_mutex_t mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+
+        ```c
+
+        // Example: 
+        pthread_mutex_lock(&mutex);  // Lock count = 1
+        pthread_mutex_lock(&mutex);  // Lock count = 2
+        ...
+        pthread_mutex_unlock(&mutex);  // Lock count = 1 (still locked)
+        pthread_mutex_unlock(&mutex);  // Lock count = 0 (now unlocked)
+        ```
+
+        E.g. if you call unlock() once but had initially locked it twice, the mutex stays locked 
+        - other threads cannot proceed!
+
+    - NP = non portable without blocking 
+
+    Note: a normal (non recursive) mutex will **deadlock** if the same thread tires to lock it twice
 
     PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP;
-    - only the mutex owner can unlock it
+    - checks that only the mutex owner can unlock the mutex
+    - prevents bugs from accidental unlocks by other threads
