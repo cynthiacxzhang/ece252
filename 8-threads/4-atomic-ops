@@ -37,6 +37,6 @@ Note: gcc atomic operations
     returns old value
 
 Atomic operations from gg are implemented with atomic machine instructions where possible
-- otherwise implemented wiht memory barriers
+- otherwise implemented with memory barriers
 
 
