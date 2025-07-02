@@ -23,3 +23,14 @@ Situation: combine a mutex unlock wiht a wait for events
     Note: waiting a condition variable implicitly unlocks the mutex before blocking, and relocks mutex after unblocking
 
 - Thread A needs to recheck the condition after waiting because another thread, C, could have locked the mutex first and changed the condition.
+
+**Functions and Initializers**
+
+    ```c
+    pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+    pthread_cond_init(&cond, &attr);            // NULL for attr = use defaults
+                _destroy(&cond);
+                _wait(&cond, &mutex);
+                _signal(&cond);
+                _broadcast(&cond);
+    ```
