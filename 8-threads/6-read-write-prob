@@ -1,0 +1,71 @@
+**Readers-Writers Problem**
+
+Some threads only need to read a shared resource 
+- linked list, database, file
+
+While others need to update it
+
+    Writer:
+        lock mutex
+        write ...
+        unlock mutex
+
+    Reader
+        lock mutex
+        read ...
+        unlock mutex
+
+    Problem: exclusive writes and exclusive reads limit concurrency
+
+    - why? writers need to wait on readers, readers need to wait on writers
+
+    Solution: imagine that the shared resource is a room
+    - track the number of readers entering and exiting the room
+
+## Readers-Writers Solution
+
+Concurrent readers exclusive
+
+    integer readers = 0
+    mutex
+    sem room Empty = 1 (open)
+
+    Writer
+        wait room Empty
+        write ...
+        post room Empty
+        
+    Reader
+        lock mutex
+            readers ++
+
+            if (readers == 1)   // first reader to arrive
+
+                wait room Empty
+
+        unlock mutex
+
+        read ...
+        
+        lock mutex
+            readers --
+
+            if (readers == 0)   // last reader to leave
+
+                post room Empty
+        unlock mutex
+
+New problem: write starvation
+- a steady stream of readers could indefinitelky block any writers
+
+    → r6 → w1 → r5 → r4 → w0 →
+                         ↘
+                          [ turnstile ]
+                          ┌─────────────┐
+                          │    r0       │
+                          │ r1     r3   │
+                          └─────────────┘
+                         ↑
+       blocked on roomEmpty (w0, w1)
+
+

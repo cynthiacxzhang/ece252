@@ -34,3 +34,58 @@ Situation: combine a mutex unlock wiht a wait for events
                 _signal(&cond);
                 _broadcast(&cond);
     ```
+
+We use a condition variable to implement a reusable barrier
+
+Original: implemented using semaphores
+
+    ```c
+    const int n;
+    int count = 0;
+    sem_t mutex, turnstile1 = 0, turnstile2 = 1;
+
+    sem_wait(&mutex);
+    count++;
+    if (count == n) {
+        sem_wait(&turnstile2);
+        sem_post(&turnstile1);
+    }
+    sem_post(&mutex);
+
+    sem_wait(&turnstile1);
+    sem_post(&turnstile1);
+
+    sem_wait(&mutex);
+    count--;
+    if (count == 0) {
+        sem_wait(&turnstile1);
+        sem_post(&turnstile2);
+    }
+    sem_post(&mutex);
+
+    sem_wait(&turnstile2);
+    sem_post(&turnstile2);
+    ```
+
+Simplified Reusable Barrier: using condition variable
+- check barrier.c
+
+    ```c
+    const int n;
+    int count = 0;
+    pthread_mutex_t mutex;
+    pthread_cond_t condvar;
+
+    pthread_mutex_lock(&mutex);
+    count++;
+    if (count < n) {
+        pthread_cond_wait(&condvar, &mutex);
+    } else {
+        pthread_cond_broadcast(&condvar);
+        count = 0;
+    }
+    pthread_mutex_unlock(&mutex);
+```
+ 
+
+
