@@ -1,0 +1,36 @@
+**Concurrent Programming Problems**
+
+1. Starvations
+- a thread is not guaranteed to make forward progress 
+- see first readers-writers solution in part 6
+
+2. Deadlocks
+- two or more threads blocked permanently, waiting for each other to release shared resources
+
+    e.g. 
+
+    Thread A
+        lock mutex A (succeed)
+        lock mutex B (block)
+
+    Thread B
+        lock mutex B (succeed)
+        lock mutex A (block)
+    
+    - blocking each other
+
+3. Resource Allocation Graphs
+
+    - thread A holds mutex 1
+    - thread A waits for mutex 2
+
+    Thread A             Thread B
+        |                    |
+        v                    v
+    [muteX1]           [mutex2]
+        ^                    ^
+        |                    |
+        +--------------------+
+                A cycle!
+    
+    A cycle in a R.A.G. with mutexes indicates a deadlock!!
