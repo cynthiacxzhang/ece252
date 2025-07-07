@@ -66,6 +66,68 @@ New problem: write starvation
                           │ r1     r3   │
                           └─────────────┘
                          ↑
-       blocked on roomEmpty (w0, w1)
+        blocked on roomEmpty (w0, w1)
 
+    Legend:
+    - rX = reader thread X
+    - wX = writer thread X
 
+    Turnstile added to control entry to the critical section
+
+    Writers like w1 and w0 are blocked on roomEmpty
+
+    Readers r0, r1, r3 are inside the critical section
+
+## Readers-Writers Solution: 
+
+Concurrent Readers, Exclusive Writers, No Starvation
+- readers pass through a turnstile before entering the room
+- a waiting writer can close the turnstile
+
+A turnstile in code is usually implemented using a semaphore or condition variable, and its job is to:
+
+    - Block threads until a certain condition is met.
+    - Allow one or more threads to proceed when "opened" (i.e. posted/signaled).
+    - Reset itself to control the next wave of threads.
+
+    integer readers = 0, mutex, sem roomEmpty = 1 (open), sem turnstile = 1 (open)
+
+    Writer
+        * wait turnstile
+        wait roomEmpty
+        * post turnstile
+
+        write ...
+
+        post roomEmpty
+
+    Note: * = new
+
+    Reader
+        wait turnstile *
+        wait roomEmpty *
+
+        lock mutex  
+            readers ++
+            if readers == 1
+                wait roomEmpty
+        
+        unlock mutex
+
+        read ...
+
+        lock mutex
+            readers --
+            if readers == 0
+                post roomEmpty
+
+        unlock mutex
+
+Note: roomEmpty should be a semaphore (as opposed to a mutex) since the first reader (who waits roomEmpty) can be a different rhead than the last reader (who posts roomEmpty)
+
+- the readers-writers problem is common enough that pthreads ha a readers-writers lock type
+
+    pthread_rwlock_init()
+                  -rdlock()
+                  _unlock()
+                  _destroy()
