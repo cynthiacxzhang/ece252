@@ -34,3 +34,31 @@
                 A cycle!
     
     A cycle in a R.A.G. with mutexes indicates a deadlock!!
+
+Another example: week 10 lecture 2
+
+          semaphore1
+        +-------------+
+        |  ●       ●  | 
+        +-------------+
+         ↙           ↘
+        A             B
+         ↘           ↙
+        +-------------+
+        |  ●       ●  | 
+        +-------------+
+          semaphore2
+           ↓        ↓
+           C        D
+
+- a cycle in a RAG with sempahores might not deadlock!
+
+    Semaphore1 controls access to threads A and B.
+
+    Semaphore2 controls access to threads C and D.
+
+    The initial value of semaphore2 is 2 (not shown in the diagram but noted in the original image).
+
+    When C or D posts (signals) the semaphore, A or B will unblock.
+
+    A or B is not deadlocked because of this signaling.
