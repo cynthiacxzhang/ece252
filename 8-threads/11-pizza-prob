@@ -1,0 +1,47 @@
+**Pizza Makers Problem**
+
+E.g. Cigarette Smokers Problem
+
+Scenario: 
+- 3 chef threads and 1 food supplier thread
+- chefs loop forever waiting for 3 ingredients, and making pizzas
+- ingredients: dough, sauce, cheese
+- each chef has an unlimited supply of 1 ingredient
+- each time the supplier is signalled it supplies two different random ingredients
+- the supplier should only be signalled if no chef can proceed
+
+Setup: 
+
+    semaphores -> supply = 1, dough = 0, sauce = 0, cheese = 0
+
+    Supplier Thread:
+
+    loop:
+    1. wait on supply semaphore
+    2. supply 2 random ingredients
+    3. post supply semaphore
+
+    Naive Solution:
+
+    *dough chef thread*
+    loop: 
+        wait sauce
+        wait cheese
+        make pizza
+        post supply
+
+    *sauce chef thread*
+    loop: 
+        wait dough
+        wait cheese
+        make pizza
+        post supply
+
+    *cheese chef thread*
+    loop: 
+        wait dough
+        wait sauce
+        make pizza
+        post supply
+
+    Problem: deadlock, starvation?
