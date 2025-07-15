@@ -1,0 +1,109 @@
+**Dining Philosophers Problem**
+
+Edsger Djkstra created this problem - it models OS resource contention shared by processes/threads
+
+Scenario:
+- 5 philosophers are seated at a tale
+- they alternately think, eat, and sleep for varying amounts of time
+- there's a fork between each pair of philosophers 
+- philosophers need both forks (left and right) to eat
+
+    See: dining phils img
+
+Problem: how to pick up both forks such that deadlock or starvation are not possible?
+
+## Naive Solution
+Right fork first, left fork second
+
+    ```c
+    int first = id;
+    int second = (id + 1) % n;
+    pthread_mutex_lock(&forks[first]);
+    pthread_mutex_lock(&forks[second]);
+    ```
+
+    RAG: Resource Allocation Graph
+
+    +-----+     f0     +-----+     f1     +-----+
+    |     | ---------> |     | ---------> |     |
+    | p0  |            | f0  |            | p1  |
+    +-----+            +-----+            +-----+
+       ^                                   |
+       |                                   |
+       |                                   v
+    +-----+     f4     +-----+     f2     +-----+
+    | f4  | <--------- | p4  | <--------- | f2  |
+    +-----+            +-----+            +-----+
+       ^                                   |
+       |                                   |
+       |                                   v
+    +-----+     f3     +-----+     f3     +-----+
+    | p3  | <--------- | f3  | <--------- | p2  |
+    +-----+            +-----+            +-----+
+
+    - this scenario results in deadlock
+
+
+## Dijkstra's Solution: 
+
+Define a mutex hierarchy (f0 > f1 > f2 > f3 > f4)
+
+    ```c
+    int first = (id != n - 1) ? id : 0;     
+        // 0 if id == n - 1
+    int second = (id != n - 1) ? id + 1 : id;   
+        // id + 1 if id != n - 1
+    ```
+
+    RAG: see Dijkstra's solution img
+
+    - there is no cycle in this RAG - deadlock is impossible (p3 can proceed)
+
+
+## Semantics Solution
+
+Use non-blocking mutex lock calls?
+- what does this mean? 
+- using a non-blocking method to acquire locks on shared resources (forks)
+
+    Non-blocking Mutex Lock:
+    - instead of waiting (blocking) for a mutex to become avilable, the thread tries to acquire it and immediately knows if it will succeed or not
+
+    ```c
+    pthread_mutex_trylock(&mutex);      // doesn't block
+    ```
+
+    - returns 0 on success (locked the mutex)
+    - returns a positive number if the mutex is already locked (try failed)
+
+    Note: by using this function (trylock), if a philosopher can't acquire both forks, they release the one they have and try again
+    - prevents circular waits
+    - prevents deadlocks
+
+    
+    Step-by-Step Breakdown
+    1. *Assign Forks:*
+
+        Each philosopher/thread has an id.
+
+        The two forks needed are:
+
+            first = id
+            second = (id + 1) % n (where n is the number of philosophers/forks)
+
+    2. *Loop to Acquire Forks:*
+
+        Lock the first mutex (blocking lock)
+        
+        Try to lock the second fork (non-blocking)
+        ```c
+        if(trylock second_mutex) != 0
+        ```
+            If unsuccessful (second fork is busy):
+                Release the first fork.
+                (unlock(first_mutex))
+
+            Try again (loop continues).
+                If successful:
+                    Both forks are acquired; exit the loop to eat.
+                    (break)

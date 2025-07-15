@@ -1,0 +1,24 @@
+**Helgrind**
+
+Tool for cnocurrent error detection
+
+```bash
+valgrind --tool=helgrind ./your_program
+```
+
+Detects: 
+1. misuse of pthreads API
+- e.g. unlocking a mutex you didn't first lock
+2. data races
+- race conditions, unsafe shared memory accesses
+3. lock ordering problems
+- deadlocks (potential)
+
+See: threaderrors.c
+
+    line 29 - double destroy
+    line 33, 41 - data race
+    lines 36, 37, 42, 43 - lock ordering problem
+    line 45 - thread B terminates while holding lock
+
+    

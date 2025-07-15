@@ -1,1 +1,24 @@
-** Coffman's Conditions 
+**Coffman's Conditions for Deadlock**
+
+1. Mutual Exclusion
+
+- a resource belongs to, at most, one thread at a time
+
+2. Hold and Wait
+
+- a thread holds a resource and waitws (blocks) to aquire others
+
+3. No Preemption
+
+- only the resource-holding thread can release the resource
+
+4. Circular Wait
+
+- a cycle exists in the R.A.G.
+
+
+These 4 conditions are necessary and sufficient for deadlock to occur
+- breaking any of these conditions prevents/avoids deadlock
+
+
+
