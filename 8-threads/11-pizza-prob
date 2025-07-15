@@ -10,9 +10,13 @@ Scenario:
 - each time the supplier is signalled it supplies two different random ingredients
 - the supplier should only be signalled if no chef can proceed
 
+E.g. whenever a chef sees on the table the two ingredients they don't have, they take those, make a pizza, and signal the supplier again
+
 Setup: 
 
     semaphores -> supply = 1, dough = 0, sauce = 0, cheese = 0
+    
+        // these control when ingredients are placed and when the supplier can act
 
     Supplier Thread:
 
