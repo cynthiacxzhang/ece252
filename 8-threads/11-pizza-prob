@@ -57,4 +57,97 @@ Thread Behavior!
             make pizza
             post supply
 
-    Problem: deadlock, starvation?
+    Problem: deadlock, starvation? Example?
+
+    - supplier puts out dough and sauce
+    - dough chef takes sauce
+    - cheese chef takes dough
+
+    No chef can continue becasue the ingredients they need are held by other chefs.
+    - dough is waiting for cheese
+    - cheese is waiting for sauce
+    - sauce is waiting for both, neither of which are available
+    - supplier is waiting for be signalled but all chefs are blocked
+    Everything is stuck!!
+
+    Cycle in the RAG!
+
+## Sous Chef Solution
+- three helper threads that cooperate to tell which chef to proceed
+- each helper thread waits on ONE ingredient
+
+Semaphores: 
+- supply = 1
+- dough = 0
+- sauce = 0
+- cheese = 0
+
+Used by helper threads to tell a chef thread to proceed
+- sauce_sem = 0
+- cheese_sem = 0
+- dough_sem = 0
+
+- mutex
+
+- boolean: have_dough = false
+- boolean: have_sauce = false
+- boolean: have_cheese = false
+
+    Dough Chef Thread:
+    loop:
+        wait dough_sem
+        make pizza
+        post supply
+
+        - likewise for sauce and cheese chefs
+
+    Dough Helper Thread
+    loop: 
+        wait dough
+
+        lock mutex
+        if have_sauce:
+            have_sauce = false
+            post cheese_sem
+        else if have_cheese:
+            have_cheese = false
+            post sauce_sem
+        else:
+            have_dough = true
+        unlock mutex
+
+        - likewise for sauce and cheese helper threads
+
+Explanation: 
+- when the supplier thread puts out two ingredients, the respective helper threads unblock
+- the first helper thread fo lock the mutex sets have_{sauce/dough/cheese} to true
+- the second helper thread to lock the mutex sees have_{sauce/dough/cheese} is true and posts the semaphore for the chef that needs it
+
+
+## General Pizza Makers Problem
+
+Supplier does not wait to be told to put out ingredients
+- it periodically puts out two random ingredients
+- ingredients can accumulate and must be tracked
+
+**Solution**
+- semaphores: dough = 0, sauce = 0, cheese = 0, supply = 1
+         and: dough_sem = 0, sauce_sem = 0, cheese_sem = 0
+
+- mutex
+- integer: num_dough = 0, num_sauce = 0, num_cheese = 0
+    (scoreboard pattern)    
+
+## Dought Helper Thread
+loop:
+    wait dough
+    lock mutex
+    if num_sauce > 0:
+        num_sauce -= 1
+        post cheese_sem
+    else if num_cheese > 0:
+        num_cheese -= 1
+        post sauce_sem
+    else:
+        have_dough += 1      // have dough
+    unlock mutex

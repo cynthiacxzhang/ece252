@@ -1,0 +1,45 @@
+## Sleeping Barbers Problem
+
+Scenario: 
+- a barbershop has 1 barber chair and n waiting seats
+
+Rules:
+1. if there are no clients, the barber sleeps
+2. if the barber is asleep, a new client wakes him up
+3. if the barber is busy and there's a seat, the client waits
+4. if the barber is busy and there is no seat, the client leaves
+
+The client must invole 'getHairCut()' and the barber must involve 'cutHair()' at the same time.
+
+Solution: 
+- barber is performing a rendezvous with each client
+- clients need to track how many seats are available
+
+
+    const n = 3; // number of waiting seats
+    int clients = 0; // number of clients in the shop
+    semaphores: barber = 0, client = 0;
+    mutex: mutex = 1;
+
+    Barber Thread:
+    loop: 
+        wait client
+        post barber
+        cutHair()
+
+    Client Thread:
+    lock mutex
+        if clients = n + 1;
+            unlock mutex
+            exit
+        else:
+            clients++
+        unlock mutex
+
+        post client
+        wait barber
+        getHairCut()
+        
+        lock mutex
+            clients--
+        unlock mutex
