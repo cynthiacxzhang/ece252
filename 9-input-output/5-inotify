@@ -1,0 +1,48 @@
+## iNotify
+
+A Linux-only API to monitor filesystem events
+- it can watch for events on files or directories (and the files in the directory)
+
+Functions:
+
+```c
+int inotify_init(void); // initialize inotify and return a file descriptor for use in other calls
+int inotify_add_watch(int fd, const char *pathname, uint32_t mask); // add a watch for a file or directory
+int inotify_rm_watch(int fd, int wd); // remove a watch
+```
+```c
+read() // returns an inotify_event structure as each event occurs
+close() // close the inotify file descriptor and frees instance resources
+``` 
+
+```c
+struct inotify_event {
+    int wd; // watch descriptor
+    uint32_t mask; // event mask
+    uint32_t cookie; // unique cookie for matching events
+    uint32_t len; // length of name field
+    char name[]; // name of the file or directory (if applicable)
+};
+```
+- inotify_event struct size = sizeof(notify_event) + len
+
+Some event masks:
+```c
+IN_ACCESS // file was accessed
+IN_MODIFY // file was modified
+IN_ATTRIB // file attributes changed
+IN_CLOSE_WRITE // file opened for writing was closed        
+IN_DELETE // file was deleted
+IN_CREATE // file was created in watched directory
+IN_DELETE_SELF // watched file or directory was deleted
+IN_OPEN // file was opened
+...
+IN_ALL_EVENTS // all events
+```
+
+See: [inotify.c]
+
+- the program attempts to create a lock file (file.lock) containing its PID before doing other work
+- if the lock file already exists, it waits for it to be deleted 
+
+

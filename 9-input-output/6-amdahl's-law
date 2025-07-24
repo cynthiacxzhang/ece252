@@ -1,0 +1,28 @@
+## Amdahl's Law
+
+Program speedup:
+
+    S = old execution time / new execution time
+
+Amdahl's Law states that the speedup due to parallel execution is limited by the fraction of the program, f, that can be executed in parallel:
+
+    S = 1 / (f + (1 - f) / p)
+
+Where:
+- f = fraction of the program that can be parallelized
+- p = number of processors
+
+Example: Old execution time = 5s
+
+    serial port = 0.4s (setup and cleanup)
+
+    f = 5-0.4/5 = 0.92
+
+- given n = 2, 
+
+    S = 1 / (0.92/2 + (1 - 0.92))
+      = 1 / (0.46 + 0.08)
+      = 1 / 0.54
+      = 1.85185     // speedup!
+
+    

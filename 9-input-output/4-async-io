@@ -1,0 +1,66 @@
+## Asynchronous I/O
+
+Allows one or more I/O operations to be performed outside the control of the thread that initiates them
+- i.e. in the bakcground
+
+Note: curl_multi is a form of asynchronous I/O
+
+Functions:
+
+```c
+int aio_read(struct aiocb *aiocbp); // initiate an asynchronous read operation
+int aio_write(struct aiocb *aiocbp); // initiate an asynchronous write operation
+int aio_error(const struct aiocb *aiocbp); // check the status of an asynchronous operation
+ssize_t aio_return(struct aiocb *aiocbp); // retrieve the result of an asynchronous operation
+int aio_cancel(int fd, struct aiocb *aiocbp); // cancel an asynchronous operation
+int aio_suspend(const struct aiocb *const list[], int nent, const struct timespec *timeout); // suspend the calling thread until one or more asynchronous operations complete
+
+int lio_listio(int mode, struct aiocb *const list[], int nent, struct sigevent *sig); // initiate multiple asynchronous operations
+```
+
+```c
+struct aiocb {
+    int aio_fildes;                // file descriptor
+    off_t aio_offset;              // file offset
+    volatile void *aio_buf;                 // buffer for read/write
+    size_t aio_nbytes;             // number of bytes to read/write
+};  
+```
+
+- all calls involve aiocb pointers
+- the struct must not change while a request is in progress
+
+See: [aio.c]
+
+- the program will start reading the next file while processing (printing) the previous file
+
+    start A 
+    wait for A
+    start B
+    > print A
+
+    wait for B
+    start C
+    > print B
+
+    wait for C
+    > print C
+    
+Loop Iterations:
+
+    1. start A, wait for A
+    2. start B, print A, wait for B
+    3. start C, print B, wait for C
+    4. print C
+
+- uses double buffering to manage data:
+
+    char buf[2][BUFSIZE]; // two buffers for double buffering
+
+    t ->
+
+    buf[0]: write it1, read it1
+
+    buf[1]: write i, read i, write it2, read it2
+
+    

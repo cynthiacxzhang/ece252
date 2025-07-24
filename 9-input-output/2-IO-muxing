@@ -1,0 +1,44 @@
+## I/O Multiplexing
+
+Def; simultaneously monitor multiple file descriptors to determine when they are ready for I/O
+- requires kernel assistance via a system call such as select() (old) or poll() (newer)
+
+Note: the file descriptor normally isn't in nonblocking mode
+
+```c
+int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+```
+
+- fds: array of file descriptors to monitor
+- nfds: number of file descriptors to monitor
+- timeout: maximum number of milliseconds to wait for a file descriptor to become ready
+
+Timeout in ms, if 0: return immediately
+
+Whole function returns number of file descriptors with events or 0 if timed out
+
+```c
+struct pollfd {
+    int fd;         // file descriptor to monitor
+    short events;  // events to monitor (e.g., POLLIN, POLLOUT)
+    short revents; // returned events (e.g., POLLIN, POLLOUT)
+};
+```
+
+- event flags: 
+    POLLIN (ready for read) 
+    POLLOUT (ready for write)
+    POLLPRI (urgent data)
+
+- steps:
+    1. creat struct pollfd array with file descriptors and events
+    2. populate structs with file descriptors and events to monitor
+    3. execute poll() to block until an event happens
+    
+    See: [poll.c]
+
+
+Notes on poll():
+1. setting an fd negative in struct pollfd tells poll() to ignore events on that fd
+2. when sockets are ready to accept connections, it is a "read" event
+

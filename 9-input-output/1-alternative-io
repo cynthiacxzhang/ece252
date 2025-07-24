@@ -1,0 +1,41 @@
+## Alternative I/O Models
+
+1. Blocking I/O
+
+By default, system calls block until data is transferred
+- a thread does operations on 1 file descriptor at a time (fd)
+- multiple threads are to do simultaneous transfers: scalability and coordination can be problematic 
+
+2. Non-blocking I/O
+
+Can be performed on sockets, pipes, FIFO terminals, etc
+- after opening, set the O_NONBLOCK flag
+
+    int flags = fcntl(fd, F_GETFL);             // get flags
+    fcntl(fd, F_SETFL, flags | O_NONBLOCK);     // set flags
+
+- if the IO operation cannot complete immediately, a partial transfer is performed or the call fails
+
+    returns -1
+    sets errno to EAGAIN or EWOULDBLOCK
+
+- note: O_NONBLOCK is ignored for disc files because the kernel buffer cache ensures I/ operations are always non-blocking
+
+See: [nonblocking.c]
+
+A program can use non-blocking I/O to handle multiple file descriptors simultaneously
+
+e.g. while (true) {
+    if(read(fd1, buf1, sizeof(buf1)) != -1) {
+        // process data from fd1
+    };
+    if(read(fd2, buf2, sizeof(buf2)) != -1) {
+        // process data from fd2
+    };
+    etc
+    sleep(1); // avoid busy waiting or do other work
+}
+
+However, this can result in busy waiting (with no sleep()) or result in slow response
+
+
