@@ -22,3 +22,6 @@ int array_len = ARRAY_SIZE;
 int search_value = TARGET_VALUE;
 
 // Note: no need for pipes since the processes don't need to communicate
+// - because the child processes inherit the fds of the parent, they all share the same console output interface
+
+pid_t pid;
