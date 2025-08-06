@@ -25,3 +25,65 @@ int search_value = TARGET_VALUE;
 // - because the child processes inherit the fds of the parent, they all share the same console output interface
 
 pid_t pid;
+
+int main()
+{
+
+    pid = fork(); // creating first child process
+
+    // error check
+    if (pid == -1)
+    {
+        printf("Fork failed\n");
+        return 1;
+    }
+    else if (pid == 0)
+    { // first child process
+        // search first half of the array
+        for (int i = 0; i < array_len / 2; i++)
+        {
+            if (array[i] == search_value)
+            {
+                printf("Child 1 found value at index: %d\n", i);
+                exit(i); // exit with index if found
+            }
+        }
+        return -1; // return -1 if not found
+    }
+    else
+    {                        // parent process
+        pid_t pid2 = fork(); // creating second child process
+
+        // error check
+        if (pid2 == -1)
+        {
+            printf("Fork failed\n");
+            return 1;
+        }
+        else if (pid2 == 0)
+        { // second child process
+            // search second half of the array
+            for (int i = array_len / 2; i < array_len; i++)
+            {
+                if (array[i] == search_value)
+                {
+                    printf("Child 2 found value at index: %d\n", i);
+                    exit(i); // exit with index if found
+                }
+            }
+            return -1; // return -1 if not found
+        }
+        else
+        { // parent process - searches latter third of array
+            for (int i = 0; i < array_len; i++)
+            {
+                if (array[i] == search_value)
+                {
+                    printf("Parent found value at index: %d\n", i);
+                    exit(i); // exit with index if found
+                }
+            }
+            return -1; // return -1 if not found
+        }
+    }
+}
