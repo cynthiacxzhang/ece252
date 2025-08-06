@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
             return 0;     // exit successfully
         }
 
-        // bytes_read = read(fd, buffer, sizeof(ece_course)); // read next course
+        bytes_read = read(fd, buffer, sizeof(ece_course)); // read next course - READ automatically increments the fd
     }
 
     printf("Course not found\n");
