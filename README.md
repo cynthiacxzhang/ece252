@@ -1,4 +1,4 @@
-# ECE252 Notes from Summer 2025
+# ECE252 Notes - Spring 25'
 
 Units:
 1. Intro to C 
