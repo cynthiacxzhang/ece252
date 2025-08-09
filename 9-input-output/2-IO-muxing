@@ -31,7 +31,7 @@ struct pollfd {
     POLLPRI (urgent data)
 
 - steps:
-    1. creat struct pollfd array with file descriptors and events
+    1. create struct pollfd array with file descriptors and events
     2. populate structs with file descriptors and events to monitor
     3. execute poll() to block until an event happens
     
